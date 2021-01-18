@@ -1,15 +1,28 @@
 <template>
   <div>
-    <v-data-table
-      :headers="headers"
-      :items="players"
-      :items-per-page="10"
-      class="elevation-1"
-    >
-      <template v-slot:[`item.nickname`]="{ item }">
-        <span v-html="item.nickname"></span>
-      </template>
-    </v-data-table>
+    <v-card>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+          dense
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="players"
+        :items-per-page="10"
+        :search="search"
+        class="elevation-1"
+      >
+        <template v-slot:[`item.nickname`]="{ item }">
+          <span v-html="item.nickname"></span>
+        </template>
+      </v-data-table>
+    </v-card>
   </div>
 </template>
 
@@ -23,7 +36,7 @@ import dayjs from "dayjs";
 
 Vue.use(VueAxios, axios);
 
-interface Player {
+export interface Player {
   id: number;
   created_at: string;
   updated_at: string;
@@ -35,6 +48,7 @@ interface Player {
 
 @Component
 export default class Players extends Vue {
+  search = "";
   players: Player[] = [];
   headers = [
     {

@@ -1,16 +1,25 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/players">Players</router-link> |
-      <router-link to="/maps">Maps</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <v-main>
-      <v-container>
-        <router-view />
-      </v-container>
-    </v-main>
+    <v-app>
+      <v-navigation-drawer app id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/records">Records</router-link> |
+        <router-link to="/players">Players</router-link> |
+        <router-link to="/maps">Maps</router-link> |
+        <router-link to="/about">About</router-link>
+      </v-navigation-drawer>
+      <v-app-bar app>
+        <!-- -->
+      </v-app-bar>
+      <v-main>
+        <v-container>
+          <router-view />
+        </v-container>
+      </v-main>
+      <v-footer app>
+        <!-- -->
+      </v-footer>
+    </v-app>
   </div>
 </template>
 

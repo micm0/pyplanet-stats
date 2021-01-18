@@ -1,26 +1,39 @@
 <template>
   <div class="maps">
-    <v-data-table
-      :headers="headers"
-      :items="maps"
-      :items-per-page="10"
-      class="elevation-1"
-    >
-      <template v-slot:[`item.name`]="{ item }">
-        <span v-html="item.name"></span>
-      </template>
-      <template v-slot:[`item.mx_id`]="{ item }">
-        <v-btn
-          v-if="item.mx_id"
-          :href="mxLink(item.mx_id)"
-          target="blank"
-          small
-          text
-          fab
-          ><img src="../assets/mx_full.png" width="30px"
-        /></v-btn>
-      </template>
-    </v-data-table>
+    <v-card>
+      <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+          dense
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="maps"
+        :items-per-page="10"
+        :search="search"
+        class="elevation-1"
+      >
+        <template v-slot:[`item.name`]="{ item }">
+          <span v-html="item.name"></span>
+        </template>
+        <template v-slot:[`item.mx_id`]="{ item }">
+          <v-btn
+            v-if="item.mx_id"
+            :href="mxLink(item.mx_id)"
+            target="blank"
+            small
+            text
+            fab
+            ><img src="../assets/mx_full.png" width="30px"
+          /></v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
   </div>
 </template>
 
@@ -33,7 +46,7 @@ import { TimeFormat } from "../TimeFormat";
 
 Vue.use(VueAxios, axios);
 
-interface Track {
+export interface Track extends Vue {
   id: number;
   name: string;
   author_login: string;
@@ -45,6 +58,7 @@ interface Track {
 
 @Component
 export default class Maps extends Vue {
+  search = "";
   maps: Track[] = [];
   headers = [
     {
@@ -61,7 +75,7 @@ export default class Maps extends Vue {
   ];
 
   mounted() {
-    Vue.axios.get("http://localhost:3000/api/maps/").then(resp => {
+    Vue.axios.get("http://localhost:3000/api/tracks/").then(resp => {
       resp.data.map((map: Track) => {
         map.name = MPStyle(map.name);
         // eslint-disable-next-line @typescript-eslint/camelcase

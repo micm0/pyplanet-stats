@@ -3,6 +3,7 @@ import VueRouter, { RouteConfig } from "vue-router";
 import Home from "../views/Home.vue";
 import Maps from "../views/Maps.vue";
 import Players from "../views/Players.vue";
+import Records from "../views/Records.vue";
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,11 @@ const routes: Array<RouteConfig> = [
     path: "/players",
     name: "Players",
     component: Players
+  },
+  {
+    path: "/records",
+    name: "Records",
+    component: Records
   }
 ];
 

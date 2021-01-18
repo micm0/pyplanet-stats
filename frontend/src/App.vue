@@ -5,7 +5,11 @@
       <router-link to="/maps">Maps</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view />
+    <v-main>
+      <v-container>
+        <router-view />
+      </v-container>
+    </v-main>
   </div>
 </template>
 

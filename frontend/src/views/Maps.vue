@@ -3,7 +3,7 @@
     <v-data-table
       :headers="headers"
       :items="maps"
-      :items-per-page="15"
+      :items-per-page="10"
       class="elevation-1"
     >
       <template v-slot:[`item.name`]="{ item }">
@@ -29,20 +29,23 @@ import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter/";
-import TimeFormat from "../TimeFormat";
+import { TimeFormat } from "../TimeFormat";
 
 Vue.use(VueAxios, axios);
 
 interface Track {
   id: number;
   name: string;
+  author_login: string;
+  num_checkpoints: number;
   time_author: string;
   environment: string;
+  mx_id: number;
 }
 
 @Component
 export default class Maps extends Vue {
-  maps = [];
+  maps: Track[] = [];
   headers = [
     {
       text: "Id",
@@ -62,7 +65,7 @@ export default class Maps extends Vue {
       resp.data.map((map: Track) => {
         map.name = MPStyle(map.name);
         // eslint-disable-next-line @typescript-eslint/camelcase
-        map.time_author = TimeFormat(map.time_author);
+        map.time_author = TimeFormat(+map.time_author);
       });
       this.maps = resp.data;
     });

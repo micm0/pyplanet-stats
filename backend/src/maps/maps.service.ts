@@ -14,10 +14,6 @@ export class MapsService {
   }
 
   findOne(id: string): Promise<_Map> {
-    return this.mapModel.findOne({
-      where: {
-        id,
-      },
-    });
+    return this.mapModel.findByPk(id);
   }
 }

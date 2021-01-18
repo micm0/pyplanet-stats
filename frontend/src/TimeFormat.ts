@@ -1,7 +1,7 @@
-export default function TimeFormat(time) {
-  const seconds = Math.floor(time / 1000) % 60;
-  const minutes = Math.floor(time / 1000 / 60) % 60;
-  const hours = Math.floor(time / 1000 / 60 / 60);
+export function TimeFormat(time: number): string {
+  const seconds: number = Math.floor(time / 1000) % 60;
+  const minutes: number = Math.floor(time / 1000 / 60) % 60;
+  const hours: number = Math.floor(time / 1000 / 60 / 60);
 
   let ret = "";
   if (hours > 0) {

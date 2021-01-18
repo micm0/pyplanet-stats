@@ -9,7 +9,7 @@ import {
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
-import { _Map } from 'src/maps/map.model';
+import { Track } from 'src/tracks/track.model';
 import { Player } from 'src/players/player.model';
 
 @Table({ tableName: 'localrecord' })
@@ -25,12 +25,12 @@ export class Record extends Model {
   @UpdatedAt
   updated_at: Date;
 
-  @ForeignKey(() => _Map)
+  @ForeignKey(() => Track)
   @Column
   map_id: number;
 
-  @BelongsTo(() => _Map)
-  map: _Map;
+  @BelongsTo(() => Track)
+  track: Track;
 
   @ForeignKey(() => Player)
   @Column

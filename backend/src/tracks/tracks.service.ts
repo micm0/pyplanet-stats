@@ -1,19 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { _Map } from './map.model';
+import { Track } from './track.model';
 
 @Injectable()
-export class MapsService {
+export class TracksService {
   constructor(
-    @InjectModel(_Map)
-    private mapModel: typeof _Map,
+    @InjectModel(Track)
+    private mapModel: typeof Track,
   ) {}
 
-  async findAll(): Promise<_Map[]> {
+  async findAll(): Promise<Track[]> {
     return this.mapModel.findAll();
   }
 
-  findOne(id: string): Promise<_Map> {
+  findOne(id: string): Promise<Track> {
     return this.mapModel.findByPk(id);
   }
 }

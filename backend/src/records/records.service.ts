@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { _Map } from 'src/maps/map.model';
+import { Track } from 'src/tracks/track.model';
 import { Player } from 'src/players/player.model';
 import { Record } from './record.model';
 
@@ -12,12 +12,12 @@ export class RecordsService {
   ) {}
 
   async findAll(): Promise<Record[]> {
-    return this.recordModel.findAll({ include: [Player, _Map] });
+    return this.recordModel.findAll({ include: [Player, Track] });
   }
 
   findOne(id: string): Promise<Record> {
     return this.recordModel.findOne({
-      include: [Player, _Map],
+      include: [Player, Track],
       where: {
         id,
       },

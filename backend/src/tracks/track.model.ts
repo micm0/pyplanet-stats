@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript';
 
 @Table({ tableName: 'map' })
-export class _Map extends Model {
+export class Track extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column

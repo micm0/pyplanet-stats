@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Record } from 'src/records/record.model';
 import { Player } from './player.model';
+import { Track } from 'src/tracks/track.model';
 
 @Injectable()
 export class PlayersService {
@@ -16,7 +17,12 @@ export class PlayersService {
 
   findOne(id: string): Promise<Player> {
     return this.playerModel.findOne({
-      include: [Record],
+      include: [
+        {
+          model: Record,
+          include: [{ model: Track, attributes: ['id', 'name', 'uid'] }],
+        },
+      ],
       where: {
         id,
       },

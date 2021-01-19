@@ -12,7 +12,12 @@ export class RecordsService {
   ) {}
 
   async findAll(): Promise<Record[]> {
-    return this.recordModel.findAll({ include: [Player, Track] });
+    return this.recordModel.findAll({
+      include: [
+        { model: Player, attributes: ['id', 'nickname', 'login'] },
+        { model: Track, attributes: ['id', 'name', 'uid'] },
+      ],
+    });
   }
 
   findOne(id: string): Promise<Record> {

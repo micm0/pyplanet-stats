@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app width="200">
+  <v-navigation-drawer app v-model="drawer" width="200" clipped>
     <v-list>
       <v-img
         src="https://pbs.twimg.com/media/EeVlIjyXkAICq_z?format=jpg&name=4096x4096"
@@ -24,9 +24,11 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Prop } from "vue-property-decorator";
 
 @Component
 export default class Drawer extends Vue {
+  @Prop() readonly drawer: boolean = true;
   pages = [
     {
       title: "Home",

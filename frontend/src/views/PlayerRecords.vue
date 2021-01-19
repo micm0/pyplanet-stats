@@ -1,5 +1,9 @@
 <template>
   <div>
+    <p>
+      Server records from <span v-html="player.nickname"></span> |
+      {{ player.login }}
+    </p>
     <v-card>
       <v-card-title>
         <v-text-field
@@ -46,6 +50,11 @@ export interface PlayerRecord {
 @Component
 export default class PlayerRecords extends Vue {
   search = "";
+  player: { id: number; login: string; nickname: string } = {
+    id: 1,
+    login: "",
+    nickname: ""
+  };
   playerRecords: PlayerRecord[] = [];
   headers = [
     {
@@ -61,6 +70,9 @@ export default class PlayerRecords extends Vue {
     Vue.axios
       .get(`http://localhost:3000/api/players/${this.$route.params.id}`)
       .then(resp => {
+        this.player.id = resp.data.id;
+        this.player.login = resp.data.login;
+        this.player.nickname = MPStyle(resp.data.nickname);
         resp.data.records.map((playerRecord: PlayerRecord) => {
           playerRecord.track.name = MPStyle(playerRecord.track.name);
           playerRecord.score = TimeFormat(+playerRecord.score);

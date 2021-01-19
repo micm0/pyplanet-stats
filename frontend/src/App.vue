@@ -1,15 +1,50 @@
 <template>
   <div>
     <v-app>
-      <drawer />
-      <!-- <v-app-bar app> </v-app-bar> -->
+      <drawer :drawer="drawer" />
+      <v-app-bar clipped-left dense app>
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer">
+          <v-icon v-if="drawer">mdi-menu</v-icon>
+          <v-icon v-else>mdi-arrow-expand-right</v-icon>
+        </v-app-bar-nav-icon>
+        <v-toolbar-title>
+          <span>PyPlanet </span> <span>Stats</span>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <!-- <v-switch
+          v-model="$vuetify.theme.dark"
+          append-icon="mdi-weather-night"
+          color="yellow lighten-3"
+          hide-details
+        >
+        </v-switch> -->
+        <v-btn text @click="$vuetify.theme.dark = !$vuetify.theme.dark">
+          <div v-if="!$vuetify.theme.dark">
+            <v-icon>mdi-weather-night</v-icon>
+          </div>
+          <div v-else>
+            <v-icon color="yellow lighten-3">mdi-weather-night</v-icon>
+          </div>
+        </v-btn>
+      </v-app-bar>
       <v-main>
         <v-container>
-          <router-view />
+          <router-view class="mt-6" />
         </v-container>
       </v-main>
-      <v-footer app>
-        <!-- -->
+      <v-footer padless app>
+        <v-card-text class="py-2 text-center">
+          <span class="text-caption"> © {{ new Date().getFullYear() }} </span>
+          <strong
+            ><a
+              href="https://github.com/micm0"
+              target="blank"
+              class="text-caption"
+              style="color: inherit;"
+              >Micmo</a
+            ></strong
+          >
+        </v-card-text>
       </v-footer>
     </v-app>
   </div>
@@ -25,7 +60,9 @@ import Drawer from "@/components/Drawer.vue";
     Drawer
   }
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  drawer = true;
+}
 </script>
 
 <style>
@@ -34,19 +71,5 @@ export default class App extends Vue {}
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 }
-
-/* #nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-} */
 </style>

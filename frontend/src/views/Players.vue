@@ -19,7 +19,9 @@
         class="elevation-1"
       >
         <template v-slot:[`item.nickname`]="{ item }">
-          <span v-html="item.nickname"></span>
+          <v-btn text :to="'/player/' + item.id">
+            <span v-html="item.nickname"></span>
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -75,3 +77,9 @@ export default class Players extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.v-btn {
+  text-transform: none !important;
+}
+</style>

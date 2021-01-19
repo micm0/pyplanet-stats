@@ -1,16 +1,8 @@
 <template>
-  <div id="app">
+  <div>
     <v-app>
-      <v-navigation-drawer app id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/records">Records</router-link> |
-        <router-link to="/players">Players</router-link> |
-        <router-link to="/maps">Maps</router-link> |
-        <router-link to="/about">About</router-link>
-      </v-navigation-drawer>
-      <v-app-bar app>
-        <!-- -->
-      </v-app-bar>
+      <drawer />
+      <!-- <v-app-bar app> </v-app-bar> -->
       <v-main>
         <v-container>
           <router-view />
@@ -23,6 +15,19 @@
   </div>
 </template>
 
+<script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
+import Drawer from "@/components/Drawer.vue";
+
+@Component({
+  components: {
+    Drawer
+  }
+})
+export default class App extends Vue {}
+</script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -32,7 +37,7 @@
   color: #2c3e50;
 }
 
-#nav {
+/* #nav {
   padding: 30px;
 }
 
@@ -43,5 +48,5 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
-}
+} */
 </style>

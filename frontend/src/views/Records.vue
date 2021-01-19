@@ -22,7 +22,9 @@
           <span v-html="item.track.name"></span>
         </template>
         <template v-slot:[`item.player.nickname`]="{ item }">
-          <span v-html="item.player.nickname"></span>
+          <v-btn text :to="'/player/' + item.player.id">
+            <span v-html="item.player.nickname"></span>
+          </v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -91,3 +93,8 @@ export default class Records extends Vue {
   }
 }
 </script>
+<style scoped>
+.v-btn {
+  text-transform: none !important;
+}
+</style>

@@ -19,7 +19,9 @@
         class="elevation-1"
       >
         <template v-slot:[`item.track.name`]="{ item }">
-          <span v-html="tmStyle(item.track.name)"></span>
+          <v-btn text :to="'/map/' + item.track.id">
+            <span v-html="tmStyle(item.track.name)"></span>
+          </v-btn>
         </template>
         <template v-slot:[`item.player.nickname`]="{ item }">
           <v-btn text :to="'/player/' + item.player.id">
@@ -94,8 +96,3 @@ export default class Records extends Vue {
   }
 }
 </script>
-<style scoped>
-.v-btn {
-  text-transform: none !important;
-}
-</style>

@@ -89,9 +89,3 @@ export default class Players extends Vue {
   }
 }
 </script>
-
-<style scoped>
-.v-btn {
-  text-transform: none !important;
-}
-</style>

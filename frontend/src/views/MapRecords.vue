@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      Server records on <span v-html="track.name"></span> by
+      Server records on <span v-html="track.name" class="mx-1"></span> by
       {{ track.authorLogin }}
     </p>
     <v-card>
@@ -25,7 +25,9 @@
         :sort-desc.sync="sortDesc"
       >
         <template v-slot:[`item.player.nickname`]="{ item }">
-          <span v-html="tmStyle(item.player.nickname)"></span>
+          <v-btn text :to="'/player/' + item.player.id">
+            <span v-html="tmStyle(item.player.nickname)"></span>
+          </v-btn>
         </template>
         <template v-slot:[`item.score`]="{ item }">
           <span>{{ toTmTime(item.score) }}</span>

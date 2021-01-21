@@ -25,7 +25,9 @@
         :sort-desc.sync="sortDesc"
       >
         <template v-slot:[`item.track.name`]="{ item }">
-          <span v-html="tmStyle(item.track.name)"></span>
+          <v-btn text :to="'/map/' + item.track.id">
+            <span v-html="tmStyle(item.track.name)"></span>
+          </v-btn>
         </template>
         <template v-slot:[`item.score`]="{ item }">
           <span v-html="toTmTime(item.score)"></span>
@@ -82,7 +84,7 @@ export default class PlayerRecords extends Vue {
       .then(resp => {
         this.player.id = resp.data.id;
         this.player.login = resp.data.login;
-        this.player.nickname = MPStyle(resp.data.nickname);
+        this.player.nickname = this.tmStyle(resp.data.nickname);
         resp.data.records.forEach((playerRecord: PlayerRecord) => {
           this.playerRecords.push({
             id: playerRecord.id,
@@ -105,9 +107,3 @@ export default class PlayerRecords extends Vue {
   }
 }
 </script>
-
-<style scoped>
-.v-btn {
-  text-transform: none !important;
-}
-</style>

@@ -72,4 +72,7 @@ export default class App extends Vue {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+.v-btn {
+  text-transform: none !important;
+}
 </style>

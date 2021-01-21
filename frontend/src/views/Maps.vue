@@ -95,8 +95,3 @@ export default class Maps extends Vue {
   }
 }
 </script>
-<style scoped>
-.v-btn {
-  text-transform: none !important;
-}
-</style>

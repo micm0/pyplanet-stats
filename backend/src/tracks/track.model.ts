@@ -2,11 +2,13 @@ import {
   AutoIncrement,
   Column,
   CreatedAt,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt,
 } from 'sequelize-typescript';
+import { Record } from 'src/records/record.model';
 
 @Table({ tableName: 'map' })
 export class Track extends Model {
@@ -59,4 +61,7 @@ export class Track extends Model {
 
   @Column
   mx_id: number;
+
+  @HasMany(() => Record)
+  records: Record[];
 }

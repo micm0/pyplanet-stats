@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Player } from 'src/players/player.model';
+import { Record } from 'src/records/record.model';
 import { Track } from './track.model';
 
 @Injectable()
@@ -14,6 +16,16 @@ export class TracksService {
   }
 
   findOne(id: string): Promise<Track> {
-    return this.mapModel.findByPk(id);
+    return this.mapModel.findOne({
+      include: [
+        {
+          model: Record,
+          include: [{ model: Player, attributes: ['id', 'nickname', 'login'] }],
+        },
+      ],
+      where: {
+        id,
+      },
+    });
   }
 }

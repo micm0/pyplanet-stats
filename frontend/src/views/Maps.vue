@@ -19,7 +19,12 @@
         class="elevation-1"
       >
         <template v-slot:[`item.name`]="{ item }">
-          <span v-html="item.name"></span>
+          <v-btn text :to="'/map/' + item.id">
+            <span v-html="tmStyle(item.name)"></span>
+          </v-btn>
+        </template>
+        <template v-slot:[`item.time_author`]="{ item }">
+          <span v-html="toTmTime(item.time_author)"></span>
         </template>
         <template v-slot:[`item.mx_id`]="{ item }">
           <v-btn
@@ -66,27 +71,32 @@ export default class Maps extends Vue {
       align: "start",
       value: "id"
     },
-    { text: "Name", value: "name" },
+    { text: "Name", value: "name", sortable: false },
     { text: "Author Login", value: "author_login" },
     { text: "Number of checkpoints", value: "num_checkpoints" },
     { text: "Author Time", value: "time_author" },
     { text: "Environment", value: "environment" },
-    { text: "MX Link", value: "mx_id" }
+    { text: "MX Link", value: "mx_id", sortable: false }
   ];
 
   mounted() {
     Vue.axios.get("http://localhost:3000/api/tracks/").then(resp => {
-      resp.data.map((map: Track) => {
-        map.name = MPStyle(map.name);
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        map.time_author = TimeFormat(+map.time_author);
-      });
       this.maps = resp.data;
     });
   }
-
   mxLink(mxId: number): string {
     return "https://tm.mania-exchange.com/maps/" + mxId;
   }
+  tmStyle(nickname: string): string {
+    return MPStyle(nickname);
+  }
+  toTmTime(score: string): string {
+    return TimeFormat(+score);
+  }
 }
 </script>
+<style scoped>
+.v-btn {
+  text-transform: none !important;
+}
+</style>

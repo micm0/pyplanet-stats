@@ -21,9 +21,17 @@
         :items-per-page="10"
         :search="search"
         class="elevation-1"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
       >
         <template v-slot:[`item.track.name`]="{ item }">
-          <span v-html="item.track.name"></span>
+          <span v-html="tmStyle(item.track.name)"></span>
+        </template>
+        <template v-slot:[`item.score`]="{ item }">
+          <span v-html="toTmTime(item.score)"></span>
+        </template>
+        <template v-slot:[`item.updated_at`]="{ item }">
+          <span v-html="formatDate(item.updated_at)"></span>
         </template>
       </v-data-table>
     </v-card>
@@ -50,6 +58,8 @@ export interface PlayerRecord {
 @Component
 export default class PlayerRecords extends Vue {
   search = "";
+  sortBy = "updated_at";
+  sortDesc = true;
   player: { id: number; login: string; nickname: string } = {
     id: 1,
     login: "",
@@ -62,7 +72,7 @@ export default class PlayerRecords extends Vue {
       align: "start",
       value: "id"
     },
-    { text: "Map", value: "track.name" },
+    { text: "Map", value: "track.name", sortable: false },
     { text: "Score", value: "score" },
     { text: "Updated At", value: "updated_at" }
   ];
@@ -73,14 +83,6 @@ export default class PlayerRecords extends Vue {
         this.player.id = resp.data.id;
         this.player.login = resp.data.login;
         this.player.nickname = MPStyle(resp.data.nickname);
-        resp.data.records.map((playerRecord: PlayerRecord) => {
-          playerRecord.track.name = MPStyle(playerRecord.track.name);
-          playerRecord.score = TimeFormat(+playerRecord.score);
-          // eslint-disable-next-line @typescript-eslint/camelcase
-          playerRecord.updated_at = dayjs(playerRecord.updated_at).format(
-            "DD/MM/YYYY | HH:mm"
-          );
-        });
         resp.data.records.forEach((playerRecord: PlayerRecord) => {
           this.playerRecords.push({
             id: playerRecord.id,
@@ -91,6 +93,15 @@ export default class PlayerRecords extends Vue {
           });
         });
       });
+  }
+  tmStyle(nickname: string): string {
+    return MPStyle(nickname);
+  }
+  toTmTime(score: string): string {
+    return TimeFormat(+score);
+  }
+  formatDate(updatedAt: string): string {
+    return dayjs(updatedAt).format("DD/MM/YYYY | HH:mm");
   }
 }
 </script>

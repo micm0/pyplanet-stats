@@ -17,11 +17,19 @@
         :items-per-page="10"
         :search="search"
         class="elevation-1"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
       >
         <template v-slot:[`item.nickname`]="{ item }">
           <v-btn text :to="'/player/' + item.id">
-            <span v-html="item.nickname"></span>
+            <span v-html="tmStyle(item.nickname)"></span>
           </v-btn>
+        </template>
+        <template v-slot:[`item.last_seen`]="{ item }">
+          <span v-text="formatDate(item.last_seen)"></span>
+        </template>
+        <template v-slot:[`item.total_playtime`]="{ item }">
+          <span v-text="toTmTime(item.total_playtime)"></span>
         </template>
       </v-data-table>
     </v-card>
@@ -51,6 +59,8 @@ export interface Player {
 @Component
 export default class Players extends Vue {
   search = "";
+  sortBy = "last_seen";
+  sortDesc = true;
   players: Player[] = [];
   headers = [
     {
@@ -59,21 +69,23 @@ export default class Players extends Vue {
       value: "id"
     },
     { text: "Login", value: "login" },
-    { text: "Nickname", value: "nickname" },
+    { text: "Nickname", value: "nickname", sortable: false },
     { text: "Last Seen", value: "last_seen" },
     { text: "Total Playtime", value: "total_playtime" }
   ];
   mounted() {
     Vue.axios.get("http://localhost:3000/api/players/").then(resp => {
-      resp.data.map((player: Player) => {
-        player.nickname = MPStyle(player.nickname);
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        player.total_playtime = TimeFormat(+player.total_playtime);
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        player.last_seen = dayjs(player.last_seen).format("DD/MM/YYYY | HH:mm");
-      });
       this.players = resp.data;
     });
+  }
+  tmStyle(nickname: string): string {
+    return MPStyle(nickname);
+  }
+  toTmTime(score: string): string {
+    return TimeFormat(+score);
+  }
+  formatDate(updatedAt: string): string {
+    return dayjs(updatedAt).format("DD/MM/YYYY | HH:mm");
   }
 }
 </script>

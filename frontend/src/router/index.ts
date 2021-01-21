@@ -5,6 +5,7 @@ import Maps from "../views/Maps.vue";
 import Players from "../views/Players.vue";
 import Records from "../views/Records.vue";
 import PlayerRecords from "../views/PlayerRecords.vue";
+import TrackRecords from "../views/MapRecords.vue";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes: Array<RouteConfig> = [
     path: "/maps",
     name: "Maps",
     component: Maps
+  },
+  {
+    path: "/map/:id",
+    name: "Map",
+    component: TrackRecords
   },
   {
     path: "/players",

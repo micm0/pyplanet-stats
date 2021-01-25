@@ -23,6 +23,7 @@
         class="elevation-1"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
+        dense
       >
         <template v-slot:[`item.map_name`]="{ item }">
           <v-btn text :to="'/map/' + item.map_id">

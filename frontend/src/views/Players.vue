@@ -19,6 +19,7 @@
         class="elevation-1"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
+        dense
       >
         <template v-slot:[`item.nickname`]="{ item }">
           <v-btn text :to="'/player/' + item.id">
@@ -48,10 +49,10 @@ Vue.use(VueAxios, axios);
 
 export interface Player {
   id: number;
-  created_at: string;
-  updated_at: string;
   login: string;
   nickname: string;
+  avg: number;
+  updated_at: string;
   last_seen: string;
   total_playtime: string;
 }
@@ -59,17 +60,18 @@ export interface Player {
 @Component
 export default class Players extends Vue {
   search = "";
-  sortBy = "last_seen";
-  sortDesc = true;
+  sortBy = "avg";
+  sortDesc = false;
   players: Player[] = [];
   headers = [
-    {
-      text: "Id",
-      align: "start",
-      value: "id"
-    },
+    // {
+    //   text: "Id",
+    //   align: "start",
+    //   value: "id"
+    // },
     { text: "Login", value: "login" },
     { text: "Nickname", value: "nickname", sortable: false },
+    { text: "Average", value: "avg" },
     { text: "Last Seen", value: "last_seen" },
     { text: "Total Playtime", value: "total_playtime" }
   ];

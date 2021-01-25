@@ -17,6 +17,7 @@
         :items-per-page="10"
         :search="search"
         class="elevation-1"
+        dense
       >
         <template v-slot:[`item.track.name`]="{ item }">
           <v-btn text :to="'/map/' + item.track.id">
@@ -68,11 +69,11 @@ export default class Records extends Vue {
   search = "";
   records: Record[] = [];
   headers = [
-    {
-      text: "Id",
-      align: "start",
-      value: "id"
-    },
+    // {
+    //   text: "Id",
+    //   align: "start",
+    //   value: "id"
+    // },
     { text: "Map", value: "track.name", sortable: false },
     { text: "Player", value: "player.nickname", sortable: false },
     { text: "Score", value: "score" },

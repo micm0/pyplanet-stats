@@ -8,7 +8,7 @@ export class PlayersController {
 
   @Get()
   getAll(): Promise<Player[]> {
-    return this.playersService.findAll();
+    return this.playersService.findAllWithAvg();
   }
 
   @Get(':id')

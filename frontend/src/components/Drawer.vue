@@ -36,11 +36,6 @@ export default class Drawer extends Vue {
       icon: "mdi-home"
     },
     {
-      title: "Records",
-      to: "/records",
-      icon: "mdi-speedometer"
-    },
-    {
       title: "Players",
       to: "/players",
       icon: "mdi-account-supervisor"
@@ -49,6 +44,11 @@ export default class Drawer extends Vue {
       title: "Maps",
       to: "/maps",
       icon: "mdi-map"
+    },
+    {
+      title: "Records",
+      to: "/records",
+      icon: "mdi-speedometer"
     },
     {
       title: "About",

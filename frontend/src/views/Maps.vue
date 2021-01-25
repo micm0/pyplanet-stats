@@ -38,6 +38,15 @@
             ><img src="../assets/mx_full.png" width="30px"
           /></v-btn>
         </template>
+        <template v-slot:[`item.uid`]="{ item }">
+          <img
+            v-if="item.mx_id != null"
+            width="50px"
+            :src="mxThumb(item.mx_id)"
+            alt="map thumbnail"
+          />
+          <span v-else>Not on mx</span>
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -69,7 +78,7 @@ export default class Maps extends Vue {
   maps: Track[] = [];
   headers = [
     {
-      text: "Id",
+      text: "Map id",
       align: "start",
       value: "id"
     },
@@ -78,7 +87,8 @@ export default class Maps extends Vue {
     { text: "Number of checkpoints", value: "num_checkpoints" },
     { text: "Author Time", value: "time_author" },
     { text: "Environment", value: "environment" },
-    { text: "MX Link", value: "mx_id", sortable: false }
+    { text: "MX Link", value: "mx_id", sortable: false },
+    { text: "Preview(from MX)", value: "uid" }
   ];
 
   mounted() {
@@ -88,6 +98,9 @@ export default class Maps extends Vue {
   }
   mxLink(mxId: number): string {
     return "https://tm.mania-exchange.com/maps/" + mxId;
+  }
+  mxThumb(mxId: number): string {
+    return "https://tm.mania-exchange.com/maps/thumbnail/" + mxId;
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);

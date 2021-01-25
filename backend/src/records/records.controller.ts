@@ -17,7 +17,12 @@ export class RecordsController {
   }
 
   @Get('track/:id')
-  getRecords(@Param('id') id: string): Promise<Record> {
-    return this.recordsService.findRecords(id);
+  getTrackRecords(@Param('id') id: string): Promise<Record> {
+    return this.recordsService.findRecordsOfTrack(id);
+  }
+
+  @Get('player/:id')
+  getPlayerRecords(@Param('id') id: string): Promise<Record> {
+    return this.recordsService.findRecordsOfPlayer(id);
   }
 }

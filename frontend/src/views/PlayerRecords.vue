@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      Server records from <span v-html="player.nickname"></span> |
+      Server records from <span v-html="tmStyle(player.nickname)"></span> |
       {{ player.login }}
     </p>
     <v-card>
@@ -24,9 +24,9 @@
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
       >
-        <template v-slot:[`item.track.name`]="{ item }">
-          <v-btn text :to="'/map/' + item.track.id">
-            <span v-html="tmStyle(item.track.name)"></span>
+        <template v-slot:[`item.map_name`]="{ item }">
+          <v-btn text :to="'/map/' + item.map_id">
+            <span v-html="tmStyle(item.map_name)"></span>
           </v-btn>
         </template>
         <template v-slot:[`item.score`]="{ item }">
@@ -52,7 +52,9 @@ Vue.use(VueAxios, axios);
 
 export interface PlayerRecord {
   id: number;
-  track: { name: string };
+  rank: number;
+  map_id: number;
+  map_name: string;
   score: string;
   updated_at: string;
 }
@@ -60,8 +62,8 @@ export interface PlayerRecord {
 @Component
 export default class PlayerRecords extends Vue {
   search = "";
-  sortBy = "updated_at";
-  sortDesc = true;
+  sortBy = "rank";
+  sortDesc = false;
   player: { id: number; login: string; nickname: string } = {
     id: 1,
     login: "",
@@ -69,31 +71,22 @@ export default class PlayerRecords extends Vue {
   };
   playerRecords: PlayerRecord[] = [];
   headers = [
-    {
-      text: "Id",
-      align: "start",
-      value: "id"
-    },
-    { text: "Map", value: "track.name", sortable: false },
+    { text: "Rank", align: "start", value: "rank" },
+    { text: "Map", value: "map_name", sortable: false },
     { text: "Score", value: "score" },
     { text: "Updated At", value: "updated_at" }
   ];
   mounted() {
     Vue.axios
+      .get(`http://localhost:3000/api/records/player/${this.$route.params.id}`)
+      .then(resp => {
+        this.playerRecords = resp.data;
+        console.log(this.playerRecords);
+      });
+    Vue.axios
       .get(`http://localhost:3000/api/players/${this.$route.params.id}`)
       .then(resp => {
-        this.player.id = resp.data.id;
-        this.player.login = resp.data.login;
-        this.player.nickname = this.tmStyle(resp.data.nickname);
-        resp.data.records.forEach((playerRecord: PlayerRecord) => {
-          this.playerRecords.push({
-            id: playerRecord.id,
-            track: playerRecord.track,
-            score: playerRecord.score,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            updated_at: playerRecord.updated_at
-          });
-        });
+        this.player = resp.data;
       });
   }
   tmStyle(nickname: string): string {

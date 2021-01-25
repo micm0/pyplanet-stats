@@ -20,4 +20,11 @@ export class PlayersService {
       relations: ['records', 'records.track'],
     });
   }
+
+  async findOneWithRecords(id: string) {
+    return await this.playersRepository.findOne({
+      where: { id },
+      relations: ['records', 'records.track'],
+    });
+  }
 }

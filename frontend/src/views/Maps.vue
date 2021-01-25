@@ -17,6 +17,7 @@
         :items-per-page="10"
         :search="search"
         class="elevation-1"
+        dense
       >
         <template v-slot:[`item.name`]="{ item }">
           <v-btn text :to="'/map/' + item.id">

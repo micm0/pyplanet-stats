@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { Record } from './record.entity';
 import { RecordsService } from './records.service';
-import { Record } from './record.model';
 
 @Controller('records')
 export class RecordsController {
@@ -14,5 +14,10 @@ export class RecordsController {
   @Get(':id')
   getOne(@Param('id') id: string): Promise<Record> {
     return this.recordsService.findOne(id);
+  }
+
+  @Get('track/:id')
+  getRecords(@Param('id') id: string): Promise<Record> {
+    return this.recordsService.findRecords(id);
   }
 }

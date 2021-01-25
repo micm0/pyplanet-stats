@@ -1,31 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { Player } from 'src/players/player.model';
-import { Record } from 'src/records/record.model';
-import { Track } from './track.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Track } from './track.entity';
 
 @Injectable()
 export class TracksService {
   constructor(
-    @InjectModel(Track)
-    private mapModel: typeof Track,
+    @InjectRepository(Track)
+    private tracksRepository: Repository<Track>,
   ) {}
 
-  async findAll(): Promise<Track[]> {
-    return this.mapModel.findAll();
+  findAll(): Promise<Track[]> {
+    return this.tracksRepository.find();
   }
 
-  findOne(id: string): Promise<Track> {
-    return this.mapModel.findOne({
-      include: [
-        {
-          model: Record,
-          include: [{ model: Player, attributes: ['id', 'nickname', 'login'] }],
-        },
-      ],
-      where: {
-        id,
-      },
+  findOne(id: string): Promise<any> {
+    return this.tracksRepository.findOne({
+      where: { id },
+    });
+  }
+
+  findOneWithRecords(id: string): Promise<any> {
+    return this.tracksRepository.findOne({
+      where: { id },
+      relations: ['records', 'records.player'],
     });
   }
 }

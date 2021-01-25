@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TracksService } from './tracks.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Track } from './track.entity';
 import { TracksController } from './tracks.controller';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { Track } from './track.model';
+import { TracksService } from './tracks.service';
 
 @Module({
-  imports: [SequelizeModule.forFeature([Track])],
-  providers: [TracksService],
+  imports: [TypeOrmModule.forFeature([Track])],
   controllers: [TracksController],
+  providers: [TracksService],
 })
-export class MapsModule {}
+export class TracksModule {}

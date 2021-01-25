@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { Track } from './track.model';
+import { Track } from './track.entity';
 import { TracksService } from './tracks.service';
 
 @Controller('tracks')

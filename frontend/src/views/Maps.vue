@@ -51,14 +51,15 @@ import { TimeFormat } from "../TimeFormat";
 
 Vue.use(VueAxios, axios);
 
-export interface Track extends Vue {
+export interface Track {
   id: number;
+  uid: string;
   name: string;
   author_login: string;
   num_checkpoints: number;
   time_author: string;
   environment: string;
-  mx_id: number;
+  mx_id: number | null;
 }
 
 @Component

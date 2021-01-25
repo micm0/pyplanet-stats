@@ -29,7 +29,9 @@
       </v-app-bar>
       <v-main>
         <v-container>
-          <router-view class="mt-6" />
+          <transition name="fade" mode="out-in">
+            <router-view class="mt-6" />
+          </transition>
         </v-container>
       </v-main>
       <v-footer padless app>
@@ -74,5 +76,17 @@ export default class App extends Vue {
 }
 .v-btn {
   text-transform: none !important;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition-duration: 0.1s;
+  transition-property: opacity;
+  transition-timing-function: ease;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
 }
 </style>

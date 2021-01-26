@@ -1,7 +1,11 @@
 <template>
   <div>
     <v-app>
-      <drawer :drawer="drawer" />
+      <drawer
+        :drawer="drawer"
+        :trackname="trackName"
+        :playername="playerName"
+      />
       <v-app-bar clipped-left dense app>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer">
           <v-icon v-if="drawer">mdi-menu</v-icon>
@@ -30,7 +34,11 @@
       <v-main>
         <v-container>
           <transition name="fade" mode="out-in">
-            <router-view class="mt-6" />
+            <router-view
+              class="mt-6"
+              @trackname="getTrackName"
+              @playername="getPlayerName"
+            />
           </transition>
         </v-container>
       </v-main>
@@ -56,6 +64,8 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Drawer from "@/components/Drawer.vue";
+import { Watch } from "vue-property-decorator";
+import { Route } from "vue-router";
 
 @Component({
   components: {
@@ -64,6 +74,26 @@ import Drawer from "@/components/Drawer.vue";
 })
 export default class App extends Vue {
   drawer = true;
+  trackName = "";
+  playerName = "";
+  //Watch route change.
+  //Empty trackName/playerName if new route isn't Map/Player
+  @Watch("$route", { immediate: true, deep: true })
+  onUrlChange(newRoute: Route) {
+    if (newRoute.name !== "Map") this.trackName = "";
+    if (newRoute.name !== "Player") this.playerName = "";
+  }
+  get trackRecordsRoute() {
+    return this.$route.name == "Map";
+  }
+  //get trackname value from maprecords child component
+  getTrackName(value: string) {
+    this.trackName = value;
+  }
+  //get playername value from playerrecords child component
+  getPlayerName(value: string) {
+    this.playerName = value;
+  }
 }
 </script>
 

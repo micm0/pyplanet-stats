@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter/";
@@ -65,6 +65,10 @@ export default class PlayerRecords extends Vue {
   search = "";
   sortBy = "rank";
   sortDesc = false;
+  @Emit("playername")
+  emitPlayerName() {
+    return this.player.nickname;
+  }
   player: { id: number; login: string; nickname: string } = {
     id: 1,
     login: "",
@@ -88,6 +92,7 @@ export default class PlayerRecords extends Vue {
       .get(`http://localhost:3000/api/players/${this.$route.params.id}`)
       .then(resp => {
         this.player = resp.data;
+        this.emitPlayerName();
       });
   }
   tmStyle(nickname: string): string {

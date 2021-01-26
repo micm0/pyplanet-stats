@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app v-model="drawer" width="200" clipped>
+  <v-navigation-drawer app v-model="drawer" width="230" clipped>
     <v-list>
       <v-img
         src="https://pbs.twimg.com/media/EeVlIjyXkAICq_z?format=jpg&name=4096x4096"
@@ -14,7 +14,17 @@
           <v-list-item-icon>
             <v-icon v-text="page.icon"></v-icon>
           </v-list-item-icon>
-          <v-list-item-content v-text="page.title"> </v-list-item-content>
+          <v-list-item-content>
+            <v-list-item-title v-html="page.title"></v-list-item-title>
+            <v-list-item-subtitle
+              v-if="trackRecordsRoute && page.title == 'Maps'"
+              v-html="tmStyle(trackname)"
+            ></v-list-item-subtitle>
+            <v-list-item-subtitle
+              v-if="playerRecordsRoute && page.title == 'Players'"
+              v-html="tmStyle(playername)"
+            ></v-list-item-subtitle>
+          </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
     </v-list>
@@ -22,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter";
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Prop } from "vue-property-decorator";
@@ -29,6 +40,14 @@ import { Prop } from "vue-property-decorator";
 @Component
 export default class Drawer extends Vue {
   @Prop() readonly drawer: boolean = true;
+  @Prop() trackname: string | undefined;
+  @Prop() playername: string | undefined;
+  get trackRecordsRoute() {
+    return this.$route.name == "Map";
+  }
+  get playerRecordsRoute() {
+    return this.$route.name == "Player";
+  }
   pages = [
     {
       title: "Home",
@@ -56,5 +75,8 @@ export default class Drawer extends Vue {
       icon: "mdi-information"
     }
   ];
+  tmStyle(name: string): string {
+    return MPStyle(name);
+  }
 }
 </script>

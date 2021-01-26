@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter/";
@@ -63,8 +63,12 @@ export interface TrackRecord {
 @Component
 export default class TrackRecords extends Vue {
   search = "";
+  @Emit("trackname")
+  emitTrackName() {
+    return this.track.name;
+  }
   /* eslint-disable @typescript-eslint/camelcase */
-  //unknown value because vuejs will warn if we don't set a value
+  //unknown object value because vuejs will warn if we don't set a value
   track: Track = {
     id: 0,
     uid: "unknown",
@@ -92,6 +96,7 @@ export default class TrackRecords extends Vue {
       .get(`http://localhost:3000/api/tracks/${this.$route.params.id}`)
       .then(resp => {
         this.track = resp.data;
+        this.emitTrackName();
       });
   }
   tmStyle(name: string): string {

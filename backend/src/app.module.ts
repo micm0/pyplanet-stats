@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { PlayersModule } from './players/players.module';
 import { RecordsModule } from './records/records.module';
 import { TracksModule } from './tracks/tracks.module';
+import { KarmaModule } from './karma/karma.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TracksModule } from './tracks/tracks.module';
     PlayersModule,
     RecordsModule,
     TracksModule,
+    KarmaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

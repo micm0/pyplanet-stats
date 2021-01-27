@@ -86,7 +86,6 @@ export default class PlayerRecords extends Vue {
       .get(`http://localhost:3000/api/records/player/${this.$route.params.id}`)
       .then(resp => {
         this.playerRecords = resp.data;
-        console.log(this.playerRecords);
       });
     Vue.axios
       .get(`http://localhost:3000/api/players/${this.$route.params.id}`)

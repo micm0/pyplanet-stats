@@ -10,6 +10,9 @@
           hide-details
           dense
         ></v-text-field>
+        <v-btn class="ml-2"
+          ><v-icon @click="refresh">mdi-refresh</v-icon>
+        </v-btn>
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -82,6 +85,9 @@ export default class Records extends Vue {
     { text: "Updated At", value: "updated_at" }
   ];
   mounted() {
+    this.refresh();
+  }
+  refresh() {
     Vue.axios.get("http://localhost:3000/api/records/").then(resp => {
       this.records = resp.data;
     });

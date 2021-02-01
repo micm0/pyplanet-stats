@@ -14,6 +14,9 @@
           hide-details
           dense
         ></v-text-field>
+        <v-btn class="ml-2"
+          ><v-icon @click="refresh">mdi-refresh</v-icon>
+        </v-btn>
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -82,16 +85,19 @@ export default class PlayerRecords extends Vue {
     { text: "Updated At", value: "updated_at" }
   ];
   mounted() {
-    Vue.axios
-      .get(`http://localhost:3000/api/records/player/${this.$route.params.id}`)
-      .then(resp => {
-        this.playerRecords = resp.data;
-      });
+    this.refresh();
     Vue.axios
       .get(`http://localhost:3000/api/players/${this.$route.params.id}`)
       .then(resp => {
         this.player = resp.data;
         this.emitPlayerName();
+      });
+  }
+  refresh() {
+    Vue.axios
+      .get(`http://localhost:3000/api/records/player/${this.$route.params.id}`)
+      .then(resp => {
+        this.playerRecords = resp.data;
       });
   }
   tmStyle(nickname: string): string {

@@ -10,6 +10,9 @@
           hide-details
           dense
         ></v-text-field>
+        <v-btn class="ml-2"
+          ><v-icon @click="refresh">mdi-refresh</v-icon>
+        </v-btn>
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -76,6 +79,9 @@ export default class Players extends Vue {
     { text: "Total Playtime", value: "total_playtime" }
   ];
   mounted() {
+    this.refresh();
+  }
+  refresh() {
     Vue.axios.get("http://localhost:3000/api/players/").then(resp => {
       this.players = resp.data;
     });

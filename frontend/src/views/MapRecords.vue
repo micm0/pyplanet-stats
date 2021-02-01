@@ -31,6 +31,9 @@
           hide-details
           dense
         ></v-text-field>
+        <v-btn class="ml-2">
+          <v-icon @click="refresh">mdi-refresh</v-icon>
+        </v-btn>
       </v-card-title>
       <v-data-table
         :headers="headers"
@@ -115,16 +118,19 @@ export default class TrackRecords extends Vue {
     { text: "Updated At", value: "updated_at" }
   ];
   mounted() {
-    Vue.axios
-      .get(`http://localhost:3000/api/records/track/${this.$route.params.id}`)
-      .then(resp => {
-        this.trackRecords = resp.data;
-      });
+    this.refresh();
     Vue.axios
       .get(`http://localhost:3000/api/tracks/${this.$route.params.id}`)
       .then(resp => {
         this.track = resp.data;
         this.emitTrackName();
+      });
+  }
+  refresh() {
+    Vue.axios
+      .get(`http://localhost:3000/api/records/track/${this.$route.params.id}`)
+      .then(resp => {
+        this.trackRecords = resp.data;
       });
   }
   copyUid() {

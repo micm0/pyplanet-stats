@@ -92,7 +92,9 @@ export default class PlayerRecords extends Vue {
   mounted() {
     this.refresh();
     Vue.axios
-      .get(`http://localhost:3000/api/players/${this.$route.params.id}`)
+      .get(
+        `${this.$store.state.config.apiSite}/players/${this.$route.params.id}`
+      )
       .then(resp => {
         this.player = resp.data;
         this.emitPlayerName();
@@ -100,7 +102,9 @@ export default class PlayerRecords extends Vue {
   }
   refresh() {
     Vue.axios
-      .get(`http://localhost:3000/api/records/player/${this.$route.params.id}`)
+      .get(
+        `${this.$store.state.config.apiSite}/records/player/${this.$route.params.id}`
+      )
       .then(resp => {
         this.playerRecords = resp.data;
       });

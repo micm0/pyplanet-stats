@@ -93,7 +93,7 @@ export default class Records extends Vue {
     this.refresh();
   }
   refresh() {
-    Vue.axios.get("http://localhost:3000/api/records/").then(resp => {
+    Vue.axios.get(`${this.$store.state.config.apiSite}/records/`).then(resp => {
       this.records = resp.data;
     });
   }

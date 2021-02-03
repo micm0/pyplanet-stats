@@ -96,15 +96,23 @@ export default class Maps extends Vue {
   };
 
   mounted() {
-    Vue.axios.get("http://localhost:3000/api/tracks/").then(resp => {
+    Vue.axios.get(`${this.$store.state.config.apiSite}/tracks/`).then(resp => {
       this.maps = resp.data;
     });
   }
   mxLink(mxId: number): string {
-    return "https://tm.mania-exchange.com/maps/" + mxId;
+    if (this.$store.state.config.mxOrTmx == "mx")
+      return "https://tm.mania-exchange.com/maps/" + mxId;
+    else {
+      return "https://trackmania.exchange/maps/" + mxId;
+    }
   }
   mxThumb(mxId: number): string {
-    return "https://tm.mania-exchange.com/maps/thumbnail/" + mxId;
+    if (this.$store.state.config.mxOrTmx == "mx")
+      return "https://tm.mania-exchange.com/maps/thumbnail/" + mxId;
+    else {
+      return "https://trackmania.exchange/maps/thumbnail/" + mxId;
+    }
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);

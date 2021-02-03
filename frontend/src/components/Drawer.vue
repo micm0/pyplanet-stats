@@ -2,7 +2,7 @@
   <v-navigation-drawer app v-model="drawerState" floating clipped>
     <v-list>
       <v-img
-        src="https://pbs.twimg.com/media/EeVlIjyXkAICq_z?format=jpg&name=4096x4096"
+        :src="this.$store.state.config.drawerImage"
         alt="PyPlanet Stats"
         dark
       >
@@ -75,11 +75,11 @@ export default class Drawer extends Vue {
     return this.$route.name == "Player";
   }
   pages = [
-    {
-      title: "Home",
-      to: "/",
-      icon: "mdi-home"
-    },
+    // {
+    //   title: "Home",
+    //   to: "/",
+    //   icon: "mdi-home"
+    // },
     {
       title: "Players",
       to: "/players",
@@ -94,12 +94,12 @@ export default class Drawer extends Vue {
       title: "Records",
       to: "/records",
       icon: "mdi-speedometer"
-    },
-    {
-      title: "About",
-      to: "/about",
-      icon: "mdi-information"
     }
+    // {
+    //   title: "About",
+    //   to: "/about",
+    //   icon: "mdi-information"
+    // }
   ];
 
   //Get Players/Maps position tabs and Set player/map position in case we change the pages array.

@@ -26,7 +26,8 @@
           <v-btn
             small
             color="indigo"
-            :href="`https://tm.mania-exchange.com/maps/download/${track.mx_id}`"
+            :href="mxDownloadMap(track.mx_id)"
+            target="blank"
             ><v-icon left> mdi-download </v-icon>Download</v-btn
           >
         </v-list-item-title>
@@ -47,7 +48,19 @@ export default class MxInfosCard extends Vue {
   @Prop() private track!: Track;
 
   mxLink(mxId: number): string {
-    return "https://tm.mania-exchange.com/maps/" + mxId;
+    if (this.$store.state.config.mxOrTmx == "mx")
+      return "https://tm.mania-exchange.com/maps/" + mxId;
+    else {
+      return "https://trackmania.exchange/maps/" + mxId;
+    }
+  }
+
+  mxDownloadMap(mxId: number): string {
+    if (this.$store.state.config.mxOrTmx == "mx")
+      return "https://tm.mania-exchange.com/maps/download/" + mxId;
+    else {
+      return "https://trackmania.exchange/maps/download" + mxId;
+    }
   }
 }
 </script>

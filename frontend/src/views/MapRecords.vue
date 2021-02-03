@@ -128,7 +128,9 @@ export default class TrackRecords extends Vue {
   mounted() {
     this.refresh();
     Vue.axios
-      .get(`http://localhost:3000/api/tracks/${this.$route.params.id}`)
+      .get(
+        `${this.$store.state.config.apiSite}/tracks/${this.$route.params.id}`
+      )
       .then(resp => {
         this.track = resp.data;
         this.emitTrackName();
@@ -136,7 +138,9 @@ export default class TrackRecords extends Vue {
   }
   refresh() {
     Vue.axios
-      .get(`http://localhost:3000/api/records/track/${this.$route.params.id}`)
+      .get(
+        `${this.$store.state.config.apiSite}/records/track/${this.$route.params.id}`
+      )
       .then(resp => {
         this.trackRecords = resp.data;
       });
@@ -154,7 +158,11 @@ export default class TrackRecords extends Vue {
     return dayjs(updatedAt).format("DD/MM/YYYY | HH:mm");
   }
   mxThumb(mxId: number): string {
-    return "https://tm.mania-exchange.com/maps/thumbnail/" + mxId;
+    if (this.$store.state.config.mxOrTmx == "mx")
+      return "https://tm.mania-exchange.com/maps/thumbnail/" + mxId;
+    else {
+      return "https://trackmania.exchange/maps/thumbnail/" + mxId;
+    }
   }
 }
 </script>

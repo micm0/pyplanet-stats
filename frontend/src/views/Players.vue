@@ -87,7 +87,7 @@ export default class Players extends Vue {
     this.refresh();
   }
   refresh() {
-    Vue.axios.get("http://localhost:3000/api/players/").then(resp => {
+    Vue.axios.get(`${this.$store.state.config.apiSite}/players/`).then(resp => {
       this.players = resp.data;
     });
   }

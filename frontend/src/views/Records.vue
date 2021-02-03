@@ -16,6 +16,7 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
+        :footer-props="footerProps"
         :items="records"
         :items-per-page="10"
         :search="search"
@@ -84,6 +85,10 @@ export default class Records extends Vue {
     // { text: "Created At", value: "created_at" },
     { text: "Updated At", value: "updated_at" }
   ];
+  footerProps = {
+    "items-per-page-options": [5, 10, 15, 50, 100]
+  };
+
   mounted() {
     this.refresh();
   }

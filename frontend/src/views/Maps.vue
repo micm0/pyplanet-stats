@@ -13,6 +13,7 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
+        :footer-props="footerProps"
         :items="maps"
         :items-per-page="10"
         :search="search"
@@ -90,6 +91,9 @@ export default class Maps extends Vue {
     { text: "MX Link", value: "mx_id", sortable: false },
     { text: "Preview(from MX)", value: "uid" }
   ];
+  footerProps = {
+    "items-per-page-options": [5, 10, 15, 50, 100, -1]
+  };
 
   mounted() {
     Vue.axios.get("http://localhost:3000/api/tracks/").then(resp => {

@@ -20,6 +20,7 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
+        :footer-props="footerProps"
         :items="playerRecords"
         :items-per-page="10"
         :search="search"
@@ -84,6 +85,10 @@ export default class PlayerRecords extends Vue {
     { text: "Score", value: "score" },
     { text: "Updated At", value: "updated_at" }
   ];
+  footerProps = {
+    "items-per-page-options": [5, 10, 15, 50, 100, -1]
+  };
+
   mounted() {
     this.refresh();
     Vue.axios

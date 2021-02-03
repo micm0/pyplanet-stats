@@ -16,6 +16,7 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
+        :footer-props="footerProps"
         :items="players"
         :items-per-page="10"
         :search="search"
@@ -78,6 +79,10 @@ export default class Players extends Vue {
     { text: "Last Seen", value: "last_seen" },
     { text: "Total Playtime", value: "total_playtime" }
   ];
+  footerProps = {
+    "items-per-page-options": [5, 10, 15, 50, 100, -1]
+  };
+
   mounted() {
     this.refresh();
   }

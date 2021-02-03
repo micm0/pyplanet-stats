@@ -11,8 +11,12 @@
         <mx-infos-card :track="track"></mx-infos-card>
       </v-col>
       <v-col cols v-if="track.mx_id">
-        <v-card>
-          <v-img height="250" :src="mxThumb(track.mx_id)" alt="map thumbnail" />
+        <v-card width="300">
+          <v-img
+            :aspect-ratio="40 / 29"
+            :src="mxThumb(track.mx_id)"
+            alt="map thumbnail"
+          />
         </v-card>
       </v-col>
     </v-row>
@@ -37,6 +41,7 @@
       </v-card-title>
       <v-data-table
         :headers="headers"
+        :footer-props="footerProps"
         :items="trackRecords"
         :items-per-page="10"
         :search="search"
@@ -117,6 +122,9 @@ export default class TrackRecords extends Vue {
     { text: "Score", value: "score" },
     { text: "Updated At", value: "updated_at" }
   ];
+  footerProps = {
+    "items-per-page-options": [5, 10, 15, 50, 100, -1]
+  };
   mounted() {
     this.refresh();
     Vue.axios

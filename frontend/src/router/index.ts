@@ -48,6 +48,12 @@ const routes: Array<RouteConfig> = [
     path: "/records",
     name: "Records",
     component: Records
+  },
+  {
+    // catch all 404 - define at the very end
+    path: "*",
+    name: "404 NotFound",
+    component: () => import("../views/NotFound.vue")
   }
 ];
 

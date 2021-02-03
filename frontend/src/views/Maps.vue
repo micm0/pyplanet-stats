@@ -36,8 +36,13 @@
             small
             text
             fab
-            ><img src="../assets/mx_full.png" width="30px"
-          /></v-btn>
+            ><img
+              v-if="$store.state.config.mxOrTmx == 'mx'"
+              src="../assets/mx_100.png"
+              width="30px"
+            />
+            <img v-else src="../assets/tmx_100.png" width="30px" />
+          </v-btn>
         </template>
         <template v-slot:[`item.uid`]="{ item }">
           <img
@@ -88,8 +93,18 @@ export default class Maps extends Vue {
     { text: "Number of checkpoints", value: "num_checkpoints" },
     { text: "Author Time", value: "time_author" },
     { text: "Environment", value: "environment" },
-    { text: "MX Link", value: "mx_id", sortable: false },
-    { text: "Preview(from MX)", value: "uid" }
+    {
+      text: this.$store.state.config.mxOrTmx == "mx" ? "MX Link" : "Tmx Link",
+      value: "mx_id",
+      sortable: false
+    },
+    {
+      text:
+        this.$store.state.config.mxOrTmx == "mx"
+          ? "Preview(from MX)"
+          : "Preview(from TMX)",
+      value: "uid"
+    }
   ];
   footerProps = {
     "items-per-page-options": [5, 10, 15, 50, 100, -1]

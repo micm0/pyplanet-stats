@@ -15,8 +15,14 @@
             text
             fab
           >
-            <img src="../assets/mx_full.png" width="30px" /> </v-btn
-        ></v-list-item-title>
+            <img
+              v-if="$store.state.config.mxOrTmx == 'mx'"
+              src="../assets/mx_100.png"
+              width="30px"
+            />
+            <img v-else src="../assets/tmx_100.png" width="30px" />
+          </v-btn>
+        </v-list-item-title>
       </v-list-item>
       <v-list-item>
         <v-list-item-title class="text-left">

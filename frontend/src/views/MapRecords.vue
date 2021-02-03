@@ -1,16 +1,16 @@
 <template>
   <div>
     <v-row justify="center" class="mb-2">
-      <v-col cols="3">
+      <v-col cols>
         <map-infos-card :track="track"></map-infos-card>
       </v-col>
-      <v-col cols="3">
+      <v-col cols>
         <karma-card :trackid="this.$route.params.id"></karma-card>
       </v-col>
-      <v-col cols="3" v-if="track.mx_id">
+      <v-col cols v-if="track.mx_id">
         <mx-infos-card :track="track"></mx-infos-card>
       </v-col>
-      <v-col cols="3" v-if="track.mx_id">
+      <v-col cols v-if="track.mx_id">
         <v-card>
           <v-img height="250" :src="mxThumb(track.mx_id)" alt="map thumbnail" />
         </v-card>

@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app v-model="drawer" clipped>
+  <v-navigation-drawer app v-model="drawerState" floating clipped>
     <v-list>
       <v-img
         src="https://pbs.twimg.com/media/EeVlIjyXkAICq_z?format=jpg&name=4096x4096"
@@ -39,7 +39,6 @@ import { Prop, Watch } from "vue-property-decorator";
 
 @Component
 export default class Drawer extends Vue {
-  @Prop() readonly drawer: boolean = true;
   @Prop() trackname: string | undefined;
   @Prop() playername: string | undefined;
 
@@ -60,6 +59,13 @@ export default class Drawer extends Vue {
     } else if (value == "") {
       this.removePlayerTab();
     }
+  }
+
+  get drawerState() {
+    return this.$store.state.drawer;
+  }
+  set drawerState(value) {
+    this.$store.commit("SET_DRAWER", value);
   }
 
   get trackRecordsRouteBool() {
@@ -95,28 +101,35 @@ export default class Drawer extends Vue {
       icon: "mdi-information"
     }
   ];
+
+  //Get Players/Maps position tabs and Set player/map position in case we change the pages array.
+  playersPosition = this.pages.findIndex(p => p.title === "Players");
+  playerPosition = this.playersPosition + 1;
+  mapsPosition = this.pages.findIndex(p => p.title === "Maps");
+  mapPosition = this.mapsPosition + 1;
+
   tmStyle(name: string): string {
     return MPStyle(name);
   }
   addMapTab() {
-    this.pages.splice(3, 0, {
+    this.pages.splice(this.mapPosition, 0, {
       title: `${this.trackname}`,
       to: `/map/${this.$route.params.id}`,
       icon: "mdi-subdirectory-arrow-right"
     });
   }
   addPlayerTab() {
-    this.pages.splice(2, 0, {
+    this.pages.splice(this.playerPosition, 0, {
       title: `${this.playername}`,
       to: `/player/${this.$route.params.id}`,
       icon: "mdi-subdirectory-arrow-right"
     });
   }
   removePlayerTab() {
-    this.pages.splice(2, 1);
+    this.pages.splice(this.playerPosition, 1);
   }
   removeMapTab() {
-    this.pages.splice(3, 1);
+    this.pages.splice(this.mapPosition, 1);
   }
 }
 </script>

@@ -1,13 +1,9 @@
 <template>
   <div>
     <v-app>
-      <drawer
-        :drawer="drawer"
-        :trackname="trackName"
-        :playername="playerName"
-      />
+      <drawer :trackname="trackName" :playername="playerName" />
       <v-app-bar clipped-left dense app>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer">
+        <v-app-bar-nav-icon @click="setDrawer(!drawer)">
           <v-icon v-if="drawer">mdi-menu</v-icon>
           <v-icon v-else>mdi-arrow-expand-right</v-icon>
         </v-app-bar-nav-icon>
@@ -66,14 +62,22 @@ import Component from "vue-class-component";
 import Drawer from "@/components/Drawer.vue";
 import { Watch } from "vue-property-decorator";
 import { Route } from "vue-router";
+import { mapMutations, mapState } from "vuex";
 
 @Component({
   components: {
     Drawer
+  },
+  computed: {
+    ...mapState(["drawer"])
+  },
+  methods: {
+    ...mapMutations({
+      setDrawer: "SET_DRAWER"
+    })
   }
 })
 export default class App extends Vue {
-  drawer = true;
   trackName = "";
   playerName = "";
   //Watch route change.
@@ -83,6 +87,11 @@ export default class App extends Vue {
     if (newRoute.name !== "Map") this.trackName = "";
     if (newRoute.name !== "Player") this.playerName = "";
   }
+
+  get drawer() {
+    return this.$store.state.drawer;
+  }
+
   get trackRecordsRoute() {
     return this.$route.name == "Map";
   }

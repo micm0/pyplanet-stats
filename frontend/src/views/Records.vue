@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { TimeFormat } from "../TimeFormat";
@@ -71,6 +71,14 @@ interface Record {
 @Component
 export default class Records extends Vue {
   search = "";
+  @Watch("$store.state.showCps")
+  OnPropertyChanged(value: boolean) {
+    value
+      ? this.headers.push({ text: "Checkpoints", value: "checkpoints" })
+      : this.headers.splice(
+          this.headers.findIndex(h => h.text === "Checkpoints")
+        );
+  }
   records: Record[] = [];
   headers = [
     // {
@@ -91,6 +99,8 @@ export default class Records extends Vue {
 
   mounted() {
     this.refresh();
+    if (this.$store.state.showCps)
+      this.headers.push({ text: "Checkpoints", value: "checkpoints" });
   }
   refresh() {
     Vue.axios.get(`${this.$store.state.config.apiSite}/records/`).then(resp => {

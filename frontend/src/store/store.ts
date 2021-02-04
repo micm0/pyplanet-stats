@@ -7,11 +7,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     drawer: true,
-    config: config
+    config: config,
+    showCps: false
   },
   mutations: {
     SET_DRAWER(state, payload) {
       state.drawer = payload;
+    },
+    SET_SHOWCPS(state, payload) {
+      state.showCps = payload;
     }
   }
 });

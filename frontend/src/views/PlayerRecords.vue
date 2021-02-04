@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter/";
@@ -73,6 +73,14 @@ export default class PlayerRecords extends Vue {
   emitPlayerName() {
     return this.player.nickname;
   }
+  @Watch("$store.state.showCps")
+  OnPropertyChanged(value: boolean) {
+    value
+      ? this.headers.push({ text: "Checkpoints", value: "checkpoints" })
+      : this.headers.splice(
+          this.headers.findIndex(h => h.text === "Checkpoints")
+        );
+  }
   player: { id: number; login: string; nickname: string } = {
     id: 1,
     login: "",
@@ -91,6 +99,8 @@ export default class PlayerRecords extends Vue {
 
   mounted() {
     this.refresh();
+    if (this.$store.state.showCps)
+      this.headers.push({ text: "Checkpoints", value: "checkpoints" });
     Vue.axios
       .get(
         `${this.$store.state.config.apiSite}/players/${this.$route.params.id}`

@@ -35,7 +35,7 @@
           hide-details
           dense
         ></v-text-field>
-        <v-btn class="ml-2">
+        <v-btn class="ml-5">
           <v-icon @click="refresh">mdi-refresh</v-icon>
         </v-btn>
       </v-card-title>
@@ -65,7 +65,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue } from "vue-property-decorator";
+import { Component, Emit, Vue, Watch } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter/";
@@ -96,10 +96,27 @@ export interface TrackRecord {
 })
 export default class TrackRecords extends Vue {
   search = "";
+  showCps = false;
   @Emit("trackname")
   emitTrackName() {
     return this.track.name;
   }
+  @Watch("$store.state.showCps")
+  OnPropertyChanged(value: boolean) {
+    value
+      ? this.headers.push({ text: "Checkpoints", value: "checkpoints" })
+      : this.headers.splice(
+          this.headers.findIndex(h => h.text === "Checkpoints")
+        );
+  }
+
+  get showCpsState() {
+    return this.$store.state.showCps;
+  }
+  set showCpsState(value: boolean) {
+    this.$store.commit("SET_SHOWCPS", value);
+  }
+
   /* eslint-disable @typescript-eslint/camelcase */
   //unknown object value because vuejs will warn if we don't set a value
   track: Track = {
@@ -127,6 +144,8 @@ export default class TrackRecords extends Vue {
   };
   mounted() {
     this.refresh();
+    if (this.$store.state.showCps)
+      this.headers.push({ text: "Checkpoints", value: "checkpoints" });
     Vue.axios
       .get(
         `${this.$store.state.config.apiSite}/tracks/${this.$route.params.id}`

@@ -11,21 +11,7 @@
           <span>PyPlanet </span> <span>Stats</span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
-        <!-- <v-switch
-          v-model="$vuetify.theme.dark"
-          append-icon="mdi-weather-night"
-          color="yellow lighten-3"
-          hide-details
-        >
-        </v-switch> -->
-        <v-btn text @click="$vuetify.theme.dark = !$vuetify.theme.dark">
-          <div v-if="!$vuetify.theme.dark">
-            <v-icon>mdi-weather-night</v-icon>
-          </div>
-          <div v-else>
-            <v-icon color="yellow lighten-3">mdi-weather-night</v-icon>
-          </div>
-        </v-btn>
+        <options-menu></options-menu>
       </v-app-bar>
       <v-main>
         <v-container>
@@ -60,13 +46,15 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import Drawer from "@/components/Drawer.vue";
+import OptionsMenu from "@/components/OptionsMenu.vue";
 import { Watch } from "vue-property-decorator";
 import { Route } from "vue-router";
 import { mapMutations, mapState } from "vuex";
 
 @Component({
   components: {
-    Drawer
+    Drawer,
+    OptionsMenu
   },
   computed: {
     ...mapState(["drawer"])

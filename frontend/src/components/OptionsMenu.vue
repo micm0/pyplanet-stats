@@ -1,0 +1,48 @@
+<template>
+  <v-menu
+    v-model="menu"
+    :close-on-content-click="false"
+    :nudge-width="200"
+    offset-y
+  >
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn v-bind="attrs" v-on="on">
+        <v-icon>mdi-cog</v-icon>
+      </v-btn>
+    </template>
+
+    <v-card>
+      <v-list>
+        <v-list-item>
+          <v-list-item-action>
+            <v-switch dense v-model="$store.state.showCps" inset></v-switch>
+          </v-list-item-action>
+          <v-list-item-title>Show checkpoints</v-list-item-title>
+        </v-list-item>
+
+        <v-list-item>
+          <v-list-item-action>
+            <v-switch dense v-model="$vuetify.theme.dark" inset></v-switch>
+          </v-list-item-action>
+          <v-list-item-title>Dark mode</v-list-item-title>
+        </v-list-item>
+      </v-list>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn text @click="menu = false">
+          Cancel
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-menu>
+</template>
+
+<script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
+
+@Component
+export default class OptionsMenu extends Vue {
+  menu = false;
+}
+</script>

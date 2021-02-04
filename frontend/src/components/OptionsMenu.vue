@@ -43,7 +43,7 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text @click="menu = false">
-          Cancel
+          Close
         </v-btn>
       </v-card-actions>
     </v-card>

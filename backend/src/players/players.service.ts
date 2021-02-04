@@ -40,12 +40,24 @@ export class PlayersService {
     const findTrackIds = await this.findTrackIds();
     const trackIds = findTrackIds.map((idObj) => idObj.id).join(',');
     return await this.playersRepository.query(
-      `SELECT player.id, player.login, player.nickname, player.last_seen, player.total_playtime, player.updated_at,
-      (SUM(LEAST(records.rec, 100)) + (100 * ((SELECT count(*) from map) - COUNT(*)))) AS sum,
-      CAST(((SUM(LEAST(records.rec, 100)) + (100 * ((SELECT count(*) from map) - COUNT(*)))) / CAST((SELECT count(*) from map) AS DECIMAL)) AS DECIMAL(5,1)) AS avg
-      FROM (SELECT @rec := CASE WHEN @map_id = map_id THEN @rec + 1 ELSE 1 END AS rec, @map_id := map_id map_id, player_id, score FROM localrecord, 
-        (SELECT @map_id := 0, @rec := 0) AS dummy WHERE map_id IN (${trackIds}) ORDER BY map_id, score)
-      AS records JOIN player ON player.id = records.player_id GROUP BY player_id ORDER BY sum`,
+      `SELECT player.id, player.nickname, player.login, player.last_seen, player.total_playtime, player.updated_at,
+      (SUM(LEAST(records.rec, 100)) + (100 * ((SELECT count(*) from map) - COUNT(*)))) AS sum, 
+      CAST(((SUM(LEAST(records.rec, 100)) + (100 * ((SELECT count(*) from map) - COUNT(*)))) / CAST((SELECT count(*) from map) AS DECIMAL)) AS DECIMAL(5,1)) AS avg 
+      FROM (
+        SELECT 
+          CASE WHEN @prevMap = map_id THEN @currentMap:= @currentMap + 1 ELSE @currentMap := 1 AND @prevMap := map_id END AS rec,
+          map_id,
+          player_id,
+          score
+        FROM 
+          localrecord,
+          (SELECT @currentMap := 0) AS c,
+          (SELECT @prevMap := 0) AS p
+        WHERE map_id IN (${trackIds})
+        ORDER BY map_id, score) AS records
+      JOIN player ON player.id = records.player_id 
+      GROUP BY player_id 
+      ORDER BY sum`,
     );
   }
 }

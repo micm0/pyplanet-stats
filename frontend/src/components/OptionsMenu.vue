@@ -26,7 +26,20 @@
           </v-list-item-action>
           <v-list-item-title>Dark mode</v-list-item-title>
         </v-list-item>
+
+        <v-list-item class="mt-5">
+          <v-spacer></v-spacer>
+          <v-list-item-action>
+            <v-select
+              dense
+              v-model="$store.state.rowsPerPage"
+              label="Set default rows per page"
+              :items="items"
+            ></v-select>
+          </v-list-item-action>
+        </v-list-item>
       </v-list>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn text @click="menu = false">
@@ -44,5 +57,6 @@ import Component from "vue-class-component";
 @Component
 export default class OptionsMenu extends Vue {
   menu = false;
+  items = [5, 10, 15, 50, 100];
 }
 </script>

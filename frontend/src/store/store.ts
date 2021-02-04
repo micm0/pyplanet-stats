@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     drawer: true,
     config: config,
-    showCps: false
+    showCps: false,
+    rowsPerPage: 10
   },
   mutations: {
     SET_DRAWER(state, payload) {

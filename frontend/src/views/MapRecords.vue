@@ -43,7 +43,7 @@
         :headers="headers"
         :footer-props="footerProps"
         :items="trackRecords"
-        :items-per-page="10"
+        :items-per-page="$store.state.rowsPerPage"
         :search="search"
         class="elevation-1"
         dense

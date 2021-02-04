@@ -18,7 +18,7 @@
         :headers="headers"
         :footer-props="footerProps"
         :items="players"
-        :items-per-page="10"
+        :items-per-page="$store.state.rowsPerPage"
         :search="search"
         class="elevation-1"
         :sort-by.sync="sortBy"

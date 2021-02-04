@@ -1,7 +1,5 @@
 <template>
-  <div class="home">
-    <HelloWorld msg="Welcome to PyPlanet Stats" />
-  </div>
+  <HelloWorld msg="Welcome to PyPlanet Stats" />
 </template>
 
 <script lang="ts">

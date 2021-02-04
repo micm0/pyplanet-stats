@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app v-model="drawerState" floating clipped>
+  <v-navigation-drawer app v-model="drawerState" clipped>
     <v-list>
       <v-img
         :src="this.$store.state.config.drawerImage"
@@ -82,7 +82,7 @@ export default class Drawer extends Vue {
     // },
     {
       title: "Players",
-      to: "/players",
+      to: "/",
       icon: "mdi-account-supervisor"
     },
     {

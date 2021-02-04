@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
+// import Home from "../views/Home.vue";
 import Maps from "../views/Maps.vue";
 import Players from "../views/Players.vue";
 import Records from "../views/Records.vue";
@@ -10,11 +10,11 @@ import TrackRecords from "../views/MapRecords.vue";
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home
-  },
+  // {
+  //   path: "/",
+  //   name: "Home",
+  //   component: Home
+  // },
   {
     path: "/about",
     name: "About",
@@ -35,9 +35,10 @@ const routes: Array<RouteConfig> = [
     component: TrackRecords
   },
   {
-    path: "/players",
+    path: "/",
     name: "Players",
-    component: Players
+    component: Players,
+    alias: "/players"
   },
   {
     path: "/player/:id",

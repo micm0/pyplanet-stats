@@ -38,7 +38,7 @@ export default class KarmaCard extends Vue {
 
   mounted() {
     Vue.axios
-      .get(`http://localhost:3000/api/karma/${this.trackid}`)
+      .get(`${this.$store.state.config.apiSite}/karma/${this.trackid}`)
       .then(resp => {
         /* eslint-disable @typescript-eslint/no-unused-vars */
         let totalScore = 0;

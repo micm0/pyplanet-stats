@@ -13,7 +13,9 @@
 
     <v-card>
       <v-list>
-        <v-list-item>
+        <v-list-item
+          v-if="this.$route.name == 'Map' || this.$route.name == 'Records'"
+        >
           <v-list-item-action>
             <v-switch dense v-model="$store.state.showCps" inset></v-switch>
           </v-list-item-action>

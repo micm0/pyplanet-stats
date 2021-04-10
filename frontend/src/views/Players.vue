@@ -34,7 +34,7 @@
           <span v-text="formatDate(item.last_seen)"></span>
         </template>
         <template v-slot:[`item.total_playtime`]="{ item }">
-          <span v-text="toTmTime(item.total_playtime)"></span>
+          <span v-text="sec2time(item.total_playtime)"></span>
         </template>
       </v-data-table>
     </v-card>
@@ -99,6 +99,18 @@ export default class Players extends Vue {
   }
   formatDate(updatedAt: string): string {
     return dayjs(updatedAt).format("DD/MM/YYYY | HH:mm");
+  }
+  sec2time(timeInSeconds: string): string {
+    const pad: any = function(num: string, size: number) {
+        return ("000" + num).slice(size * -1);
+      },
+      time: any = parseFloat(timeInSeconds).toFixed(3),
+      hours: any = Math.floor(time / 60 / 60),
+      minutes: any = Math.floor(time / 60) % 60,
+      seconds: any = Math.floor(time - minutes * 60);
+    // milliseconds: any = time.slice(-3);
+
+    return pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2);
   }
 }
 </script>

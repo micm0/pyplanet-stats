@@ -10,8 +10,8 @@
           hide-details
           dense
         ></v-text-field>
-        <v-btn class="ml-2"
-          ><v-icon @click="refresh">mdi-refresh</v-icon>
+        <v-btn @click="refresh" class="ml-2"
+          ><v-icon>mdi-refresh</v-icon>
         </v-btn>
       </v-card-title>
       <v-data-table

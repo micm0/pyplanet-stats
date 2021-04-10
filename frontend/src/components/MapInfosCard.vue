@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="10">
+  <v-card :loading="loadingTrack" elevation="10">
     <v-list dense>
       <v-list-item>
         <v-list-item-title class="text-left">Name</v-list-item-title>
@@ -39,6 +39,7 @@ import { TimeFormat } from "@/TimeFormat";
 @Component
 export default class MapInfosCard extends Vue {
   @Prop() private track!: Track;
+  @Prop() private loadingTrack!: boolean;
 
   tmStyle(name: string): string {
     return MPStyle(name);

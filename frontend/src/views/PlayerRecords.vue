@@ -27,6 +27,8 @@
         class="elevation-1"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
+        :loading="loading"
+        loading-text="Loading... Please wait"
         dense
       >
         <template v-slot:[`item.map_name`]="{ item }">
@@ -67,6 +69,7 @@ export interface PlayerRecord {
 @Component
 export default class PlayerRecords extends Vue {
   search = "";
+  loading = true;
   sortBy = "rank";
   sortDesc = false;
   @Emit("playername")
@@ -111,13 +114,16 @@ export default class PlayerRecords extends Vue {
       });
   }
   refresh() {
+    this.loading = true;
     Vue.axios
       .get(
         `${this.$store.state.config.apiSite}/records/player/${this.$route.params.id}`
       )
       .then(resp => {
         this.playerRecords = resp.data;
-      });
+        this.loading = false;
+      })
+      .catch(error => (this.loading = false));
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);

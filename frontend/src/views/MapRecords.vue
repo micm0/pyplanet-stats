@@ -2,7 +2,10 @@
   <div>
     <v-row justify="center" class="mb-2">
       <v-col cols>
-        <map-infos-card :track="track"></map-infos-card>
+        <map-infos-card
+          :track="track"
+          :loadingTrack="loadingTrack"
+        ></map-infos-card>
       </v-col>
       <v-col cols>
         <karma-card :trackid="this.$route.params.id"></karma-card>
@@ -46,6 +49,8 @@
         :items-per-page="$store.state.rowsPerPage"
         :search="search"
         class="elevation-1"
+        :loading="loading"
+        loading-text="Loading... Please wait"
         dense
       >
         <template v-slot:[`item.player_nickname`]="{ item }">
@@ -96,6 +101,8 @@ export interface TrackRecord {
 })
 export default class TrackRecords extends Vue {
   search = "";
+  loading = true;
+  loadingTrack = true;
   showCps = false;
   @Emit("trackname")
   emitTrackName() {
@@ -146,6 +153,7 @@ export default class TrackRecords extends Vue {
     this.refresh();
     if (this.$store.state.showCps)
       this.headers.push({ text: "Checkpoints", value: "checkpoints" });
+    this.loadingTrack = true;
     Vue.axios
       .get(
         `${this.$store.state.config.apiSite}/tracks/${this.$route.params.id}`
@@ -153,16 +161,21 @@ export default class TrackRecords extends Vue {
       .then(resp => {
         this.track = resp.data;
         this.emitTrackName();
-      });
+        this.loadingTrack = false;
+      })
+      .catch(error => (this.loadingTrack = false));
   }
   refresh() {
+    this.loading = true;
     Vue.axios
       .get(
         `${this.$store.state.config.apiSite}/records/track/${this.$route.params.id}`
       )
       .then(resp => {
         this.trackRecords = resp.data;
-      });
+        this.loading = false;
+      })
+      .catch(error => (this.loading = false));
   }
   copyUid() {
     navigator.clipboard.writeText(this.track.uid);

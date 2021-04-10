@@ -23,6 +23,8 @@
         class="elevation-1"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
+        :loading="loading"
+        loading-text="Loading... Please wait"
         dense
       >
         <template v-slot:[`item.nickname`]="{ item }">
@@ -64,6 +66,7 @@ export interface Player {
 @Component
 export default class Players extends Vue {
   search = "";
+  loading = true;
   sortBy = "avg";
   sortDesc = false;
   players: Player[] = [];
@@ -87,9 +90,14 @@ export default class Players extends Vue {
     this.refresh();
   }
   refresh() {
-    Vue.axios.get(`${this.$store.state.config.apiSite}/players/`).then(resp => {
-      this.players = resp.data;
-    });
+    this.loading = true;
+    Vue.axios
+      .get(`${this.$store.state.config.apiSite}/players/`)
+      .then(resp => {
+        this.players = resp.data;
+        this.loading = false;
+      })
+      .catch(error => (this.loading = false));
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);

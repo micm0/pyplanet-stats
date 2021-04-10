@@ -21,6 +21,8 @@
         :items-per-page="$store.state.rowsPerPage"
         :search="search"
         class="elevation-1"
+        :loading="loading"
+        loading-text="Loading... Please wait"
         dense
       >
         <template v-slot:[`item.track.name`]="{ item }">
@@ -71,6 +73,7 @@ interface Record {
 @Component
 export default class Records extends Vue {
   search = "";
+  loading = true;
   @Watch("$store.state.showCps")
   OnPropertyChanged(value: boolean) {
     value
@@ -103,9 +106,14 @@ export default class Records extends Vue {
       this.headers.push({ text: "Checkpoints", value: "checkpoints" });
   }
   refresh() {
-    Vue.axios.get(`${this.$store.state.config.apiSite}/records/`).then(resp => {
-      this.records = resp.data;
-    });
+    this.loading = true;
+    Vue.axios
+      .get(`${this.$store.state.config.apiSite}/records/`)
+      .then(resp => {
+        this.records = resp.data;
+        this.loading = false;
+      })
+      .catch(error => (this.loading = false));
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);

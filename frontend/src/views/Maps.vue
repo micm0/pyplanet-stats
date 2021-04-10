@@ -18,6 +18,8 @@
         :items-per-page="$store.state.rowsPerPage"
         :search="search"
         class="elevation-1"
+        :loading="loading"
+        loading-text="Loading... Please wait"
         dense
       >
         <template v-slot:[`item.name`]="{ item }">
@@ -81,6 +83,7 @@ export interface Track {
 @Component
 export default class Maps extends Vue {
   search = "";
+  loading = true;
   maps: Track[] = [];
   headers = [
     {
@@ -111,10 +114,20 @@ export default class Maps extends Vue {
   };
 
   mounted() {
-    Vue.axios.get(`${this.$store.state.config.apiSite}/tracks/`).then(resp => {
-      this.maps = resp.data;
-    });
+    this.refresh();
   }
+
+  refresh() {
+    this.loading = true;
+    Vue.axios
+      .get(`${this.$store.state.config.apiSite}/tracks/`)
+      .then(resp => {
+        this.maps = resp.data;
+        this.loading = false;
+      })
+      .catch(error => (this.loading = false));
+  }
+
   mxLink(mxId: number): string {
     if (this.$store.state.config.mxOrTmx == "mx")
       return "https://tm.mania-exchange.com/maps/" + mxId;

@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="10">
+  <v-card :loading="loading" elevation="10">
     <v-subheader>Karma Rating</v-subheader>
     <v-rating
       empty-icon="mdi-heart-outline"
@@ -32,11 +32,13 @@ Vue.use(VueAxios, axios);
 export default class KarmaCard extends Vue {
   @Prop() private trackid!: number;
 
+  loading = true;
   trackKarma = 0;
   trackKarmaOfFive = 0;
   trackKarmaCount = 0;
 
   mounted() {
+    this.loading = true;
     Vue.axios
       .get(`${this.$store.state.config.apiSite}/karma/${this.trackid}`)
       .then(resp => {
@@ -62,7 +64,9 @@ export default class KarmaCard extends Vue {
         //round at most 2 decimal places
         this.trackKarmaOfFive = Math.round(this.trackKarmaOfFive * 100) / 100;
         //TODO: list of voters with nickname and vote
-      });
+        this.loading = false;
+      })
+      .catch(error => (this.loading = false));
   }
 }
 </script>

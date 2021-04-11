@@ -97,7 +97,7 @@ export default class Players extends Vue {
         this.players = resp.data;
         this.loading = false;
       })
-      .catch(error => (this.loading = false));
+      .catch(() => (this.loading = false));
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);
@@ -109,14 +109,14 @@ export default class Players extends Vue {
     return dayjs(updatedAt).format("DD/MM/YYYY | HH:mm");
   }
   sec2time(timeInSeconds: string): string {
-    const pad: any = function(num: string, size: number) {
+    const pad = function(num: string, size: number) {
         return ("000" + num).slice(size * -1);
       },
-      time: any = parseFloat(timeInSeconds).toFixed(3),
-      hours: any = Math.floor(time / 60 / 60),
-      minutes: any = Math.floor(time / 60) % 60,
-      seconds: any = Math.floor(time - minutes * 60);
-    // milliseconds: any = time.slice(-3);
+      time: string = parseFloat(timeInSeconds).toFixed(3),
+      hours: string = Math.floor(+time / 60 / 60).toString(),
+      minutes: string = (Math.floor(+time / 60) % 60).toString(),
+      seconds: string = Math.floor(+time - +minutes * 60).toString();
+    //milliseconds: string = time.slice(-3);
 
     return pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2);
   }

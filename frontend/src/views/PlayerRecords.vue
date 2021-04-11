@@ -123,7 +123,7 @@ export default class PlayerRecords extends Vue {
         this.playerRecords = resp.data;
         this.loading = false;
       })
-      .catch(error => (this.loading = false));
+      .catch(() => (this.loading = false));
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);

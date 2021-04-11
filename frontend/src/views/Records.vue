@@ -113,7 +113,7 @@ export default class Records extends Vue {
         this.records = resp.data;
         this.loading = false;
       })
-      .catch(error => (this.loading = false));
+      .catch(() => (this.loading = false));
   }
   tmStyle(nickname: string): string {
     return MPStyle(nickname);

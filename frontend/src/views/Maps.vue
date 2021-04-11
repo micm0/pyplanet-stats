@@ -125,7 +125,7 @@ export default class Maps extends Vue {
         this.maps = resp.data;
         this.loading = false;
       })
-      .catch(error => (this.loading = false));
+      .catch(() => (this.loading = false));
   }
 
   mxLink(mxId: number): string {

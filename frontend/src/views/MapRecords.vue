@@ -163,7 +163,7 @@ export default class TrackRecords extends Vue {
         this.emitTrackName();
         this.loadingTrack = false;
       })
-      .catch(error => (this.loadingTrack = false));
+      .catch(() => (this.loadingTrack = false));
   }
   refresh() {
     this.loading = true;
@@ -175,7 +175,7 @@ export default class TrackRecords extends Vue {
         this.trackRecords = resp.data;
         this.loading = false;
       })
-      .catch(error => (this.loading = false));
+      .catch(() => (this.loading = false));
   }
   copyUid() {
     navigator.clipboard.writeText(this.track.uid);

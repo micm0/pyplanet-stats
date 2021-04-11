@@ -1,5 +1,12 @@
 <template>
-  <v-navigation-drawer app v-model="drawerState" clipped>
+  <v-navigation-drawer
+    app
+    v-model="drawerState"
+    clipped
+    ref="drawer"
+    :width="navigation.width"
+    :floating="floating"
+  >
     <v-list>
       <v-img
         :src="this.$store.state.config.drawerImage"
@@ -108,9 +115,6 @@ export default class Drawer extends Vue {
   mapsPosition = this.pages.findIndex(p => p.title === "Maps");
   mapPosition = this.mapsPosition + 1;
 
-  tmStyle(name: string): string {
-    return MPStyle(name);
-  }
   addMapTab() {
     this.pages.splice(this.mapPosition, 0, {
       title: `${this.trackname}`,
@@ -130,6 +134,93 @@ export default class Drawer extends Vue {
   }
   removeMapTab() {
     this.pages.splice(this.mapPosition, 1);
+  }
+
+  tmStyle(name: string): string {
+    return MPStyle(name);
+  }
+
+  /**
+   * Drag resize feature
+   */
+  /* eslint-disable */
+  mounted() {
+    this.setBorderWidth();
+    this.setEvents();
+  }
+
+  navigation = {
+    width: 256,
+    borderSize: 10 //to ease the drag (but it's invisible with the floating attribute)
+  };
+  floating = true; //border-right visibility
+
+  setBorderWidth() {
+    const drawerBorder = (this.$refs.drawer as Vue).$el.querySelector(
+      ".v-navigation-drawer__border"
+    );
+    (drawerBorder as any).style.width = this.navigation.borderSize + "px";
+    (drawerBorder as any).style.cursor = "ew-resize";
+    (drawerBorder as any).style.backgroundColor = "";
+  }
+
+  setEvents() {
+    const minSize = this.navigation.borderSize;
+    const el = (this.$refs.drawer as Vue).$el;
+    const drawerBorder = el.querySelector(".v-navigation-drawer__border");
+    const direction = el.classList.contains("v-navigation-drawer--right")
+      ? "right"
+      : "left";
+
+    function resize(e: { clientX: number }) {
+      document.body.style.cursor = "ew-resize";
+      const f =
+        direction === "right"
+          ? document.body.scrollWidth - e.clientX
+          : e.clientX;
+      (el as any).style.width = f + "px";
+    }
+
+    (drawerBorder as Element).addEventListener(
+      "mousedown",
+      (e: any) => {
+        this.pauseEvent(e);
+        this.floating = false;
+        (drawerBorder as any).style.backgroundColor =
+          "rgba(25, 117, 210, 0.57)";
+        if (e.offsetX < minSize) {
+          (el as any).style.transition = "initial";
+          document.addEventListener("mousemove", resize, false);
+        }
+      },
+      false
+    );
+
+    document.addEventListener(
+      "mouseup",
+      () => {
+        this.floating = true;
+        (drawerBorder as any).style.backgroundColor = "";
+        (el as any).style.transition = "";
+        this.navigation.width = (el as any).style.width;
+        document.body.style.cursor = "";
+        document.removeEventListener("mousemove", resize, false);
+      },
+      false
+    );
+  }
+  //Function to prevent text/element selection with cursor drag
+  pauseEvent(e: {
+    stopPropagation: () => void;
+    preventDefault: () => void;
+    cancelBubble: boolean;
+    returnValue: boolean;
+  }) {
+    if (e.stopPropagation) e.stopPropagation();
+    if (e.preventDefault) e.preventDefault();
+    e.cancelBubble = true;
+    e.returnValue = false;
+    return false;
   }
 }
 </script>

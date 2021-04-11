@@ -63,10 +63,27 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import SelectLocale from "./SelectLocale.vue";
+import { Watch } from "vue-property-decorator";
 
 @Component({ components: { SelectLocale } })
 export default class OptionsMenu extends Vue {
   menu = false;
   items = [5, 10, 15, 50, 100];
+
+  @Watch("$vuetify.theme.dark")
+  onThemeChange() {
+    localStorage.setItem("dark_theme", this.$vuetify.theme.dark.toString());
+  }
+  @Watch("$store.state.rowsPerPage")
+  onRowPerPageChange() {
+    localStorage.setItem(
+      "default_row_per_page",
+      this.$store.state.rowsPerPage.toString()
+    );
+  }
+  @Watch("$store.state.showCps")
+  onShowCpsChange() {
+    localStorage.setItem("show_cps", this.$store.state.showCps.toString());
+  }
 }
 </script>

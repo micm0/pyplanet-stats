@@ -79,6 +79,33 @@ export default class App extends Vue {
   mounted() {
     //Get lang from localStrorage
     if (localStorage.Lang != null) this.$i18n.locale = localStorage.Lang;
+
+    //Get theme from localStorage
+    const theme = localStorage.getItem("dark_theme");
+    if (theme) {
+      if (theme == "true") {
+        this.$vuetify.theme.dark = true;
+      } else {
+        this.$vuetify.theme.dark = false;
+      }
+    }
+
+    //Get show cps from localStorage
+    const showCps = localStorage.getItem("show_cps");
+    if (showCps) {
+      if (showCps == "true") {
+        this.$store.state.showCps = true;
+      } else {
+        this.$store.state.showCps = false;
+      }
+    }
+
+    //Get default rows per page from localStorage
+    if (localStorage.getItem("default_row_per_page") != null)
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.$store.state.rowsPerPage = +localStorage.getItem(
+        "default_row_per_page"
+      )!;
   }
 
   get drawer() {

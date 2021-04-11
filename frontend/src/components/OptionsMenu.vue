@@ -13,6 +13,13 @@
 
     <v-card>
       <v-list>
+        <v-list-item>
+          <v-list-item-action>
+            <select-locale />
+          </v-list-item-action>
+          <v-list-item-title>Change Language</v-list-item-title>
+        </v-list-item>
+
         <v-list-item
           v-if="this.$route.name == 'Map' || this.$route.name == 'Records'"
         >
@@ -55,8 +62,9 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import SelectLocale from "./SelectLocale.vue";
 
-@Component
+@Component({ components: { SelectLocale } })
 export default class OptionsMenu extends Vue {
   menu = false;
   items = [5, 10, 15, 50, 100];

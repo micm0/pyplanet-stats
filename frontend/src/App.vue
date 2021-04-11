@@ -76,6 +76,11 @@ export default class App extends Vue {
     if (newRoute.name !== "Player") this.playerName = "";
   }
 
+  mounted() {
+    //Get lang from localStrorage
+    if (localStorage.Lang != null) this.$i18n.locale = localStorage.Lang;
+  }
+
   get drawer() {
     return this.$store.state.drawer;
   }

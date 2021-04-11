@@ -1,0 +1,16 @@
+{
+  "en": {
+    "message": {
+      "players": "Players",
+      "maps": "Maps",
+      "records": "Records"
+    }
+  },
+  "fr": {
+    "message": {
+      "players": "Joueurs",
+      "maps": "Maps",
+      "records": "Records"
+    }
+  }
+}

@@ -17,12 +17,12 @@
     </v-list>
     <v-list flat>
       <v-list-item-group color="primary">
-        <v-list-item v-for="(page, i) in pages" :key="i" :to="page.to">
+        <v-list-item v-for="page in pages" :key="page.id" :to="page.to">
           <v-list-item-icon>
             <v-icon
               v-if="
-                (trackRecordsRouteBool && page.title == trackname) ||
-                  (playerRecordsRouteBool && page.title == playername)
+                (trackRecordsRouteBool && page.id == trackname) ||
+                  (playerRecordsRouteBool && page.id == playername)
               "
               v-text="page.icon"
               class="ml-4"
@@ -81,33 +81,39 @@ export default class Drawer extends Vue {
   get playerRecordsRouteBool() {
     return this.$route.name == "Player";
   }
-  pages = [
-    // {
-    //   title: "Home",
-    //   to: "/",
-    //   icon: "mdi-home"
-    // },
-    {
-      title: "Players",
-      to: "/",
-      icon: "mdi-account-supervisor"
-    },
-    {
-      title: "Maps",
-      to: "/maps",
-      icon: "mdi-map"
-    },
-    {
-      title: "Records",
-      to: "/records",
-      icon: "mdi-speedometer"
-    }
-    // {
-    //   title: "About",
-    //   to: "/about",
-    //   icon: "mdi-information"
-    // }
-  ];
+
+  get pages() {
+    return [
+      // {
+      //   title: "Home",
+      //   to: "/",
+      //   icon: "mdi-home"
+      // },
+      {
+        id: "Players",
+        title: this.$t("message.players"),
+        to: "/",
+        icon: "mdi-account-supervisor"
+      },
+      {
+        id: "Maps",
+        title: this.$t("message.maps"),
+        to: "/maps",
+        icon: "mdi-map"
+      },
+      {
+        id: "Records",
+        title: this.$t("message.records"),
+        to: "/records",
+        icon: "mdi-speedometer"
+      }
+      // {
+      //   title: "About",
+      //   to: "/about",
+      //   icon: "mdi-information"
+      // }
+    ];
+  }
 
   //Get Players/Maps position tabs and Set player/map position in case we change the pages array.
   playersPosition = this.pages.findIndex(p => p.title === "Players");
@@ -117,6 +123,7 @@ export default class Drawer extends Vue {
 
   addMapTab() {
     this.pages.splice(this.mapPosition, 0, {
+      id: `${this.trackname}`,
       title: `${this.trackname}`,
       to: `/map/${this.$route.params.id}`,
       icon: "mdi-subdirectory-arrow-right"
@@ -124,6 +131,7 @@ export default class Drawer extends Vue {
   }
   addPlayerTab() {
     this.pages.splice(this.playerPosition, 0, {
+      id: `${this.playername}`,
       title: `${this.playername}`,
       to: `/player/${this.$route.params.id}`,
       icon: "mdi-subdirectory-arrow-right"

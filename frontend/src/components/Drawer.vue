@@ -67,6 +67,14 @@ export default class Drawer extends Vue {
       this.removePlayerTab();
     }
   }
+  //Watch change locale language and replace the title of pages by the right translation
+  @Watch("$i18n.locale")
+  onLocaleChanged() {
+    this.pages.map(page => {
+      if (page.id != this.trackname && page.id != this.playername)
+        page.title = this.$t(`message.${page.id.toLowerCase()}`);
+    });
+  }
 
   get drawerState() {
     return this.$store.state.drawer;
@@ -82,43 +90,41 @@ export default class Drawer extends Vue {
     return this.$route.name == "Player";
   }
 
-  get pages() {
-    return [
-      // {
-      //   title: "Home",
-      //   to: "/",
-      //   icon: "mdi-home"
-      // },
-      {
-        id: "Players",
-        title: this.$t("message.players"),
-        to: "/",
-        icon: "mdi-account-supervisor"
-      },
-      {
-        id: "Maps",
-        title: this.$t("message.maps"),
-        to: "/maps",
-        icon: "mdi-map"
-      },
-      {
-        id: "Records",
-        title: this.$t("message.records"),
-        to: "/records",
-        icon: "mdi-speedometer"
-      }
-      // {
-      //   title: "About",
-      //   to: "/about",
-      //   icon: "mdi-information"
-      // }
-    ];
-  }
+  pages = [
+    // {
+    //   title: "Home",
+    //   to: "/",
+    //   icon: "mdi-home"
+    // },
+    {
+      id: "Players",
+      title: this.$t("message.players"),
+      to: "/",
+      icon: "mdi-account-supervisor"
+    },
+    {
+      id: "Maps",
+      title: this.$t("message.maps"),
+      to: "/maps",
+      icon: "mdi-map"
+    },
+    {
+      id: "Records",
+      title: this.$t("message.records"),
+      to: "/records",
+      icon: "mdi-speedometer"
+    }
+    // {
+    //   title: "About",
+    //   to: "/about",
+    //   icon: "mdi-information"
+    // }
+  ];
 
   //Get Players/Maps position tabs and Set player/map position in case we change the pages array.
-  playersPosition = this.pages.findIndex(p => p.title === "Players");
+  playersPosition = this.pages.findIndex(p => p.id === "Players");
   playerPosition = this.playersPosition + 1;
-  mapsPosition = this.pages.findIndex(p => p.title === "Maps");
+  mapsPosition = this.pages.findIndex(p => p.id === "Maps");
   mapPosition = this.mapsPosition + 1;
 
   addMapTab() {

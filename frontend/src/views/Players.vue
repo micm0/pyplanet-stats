@@ -5,7 +5,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          :label="searchMsg"
           single-line
           hide-details
           dense
@@ -24,7 +24,7 @@
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
         :loading="loading"
-        loading-text="Loading... Please wait"
+        :loading-text="loadingText"
         dense
       >
         <template v-slot:[`item.nickname`]="{ item }">
@@ -70,21 +70,33 @@ export default class Players extends Vue {
   sortBy = "avg";
   sortDesc = false;
   players: Player[] = [];
-  headers = [
-    // {
-    //   text: "Id",
-    //   align: "start",
-    //   value: "id"
-    // },
-    { text: "Login", value: "login" },
-    { text: "Nickname", value: "nickname", sortable: false },
-    { text: "Average", value: "avg" },
-    { text: "Last Seen", value: "last_seen" },
-    { text: "Total Playtime", value: "total_playtime" }
-  ];
-  footerProps = {
-    "items-per-page-options": [5, 10, 15, 50, 100, -1]
-  };
+
+  get searchMsg() {
+    return this.$t("message.search");
+  }
+  get loadingText() {
+    return this.$t("message.loading");
+  }
+  get headers() {
+    return [
+      // {
+      //   text: "Id",
+      //   align: "start",
+      //   value: "id"
+      // },
+      { text: "Login", value: "login" },
+      { text: this.$t("message.nickname"), value: "nickname", sortable: false },
+      { text: this.$t("message.average"), value: "avg" },
+      { text: this.$t("message.lastSeen"), value: "last_seen" },
+      { text: this.$t("message.totalPlaytime"), value: "total_playtime" }
+    ];
+  }
+  get footerProps() {
+    return {
+      "items-per-page-options": [5, 10, 15, 50, 100, -1],
+      "items-per-page-text": this.$t("message.rowsPerPage")
+    };
+  }
 
   mounted() {
     this.refresh();

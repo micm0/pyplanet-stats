@@ -2,7 +2,7 @@
   <div>
     <v-menu offset-y>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="secondary" dark v-bind="attrs" v-on="on">
+        <v-btn color="secondary" v-bind="attrs" v-on="on">
           <country-flag :country="locale" />
         </v-btn>
       </template>

@@ -33,7 +33,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          :label="searchText"
           single-line
           hide-details
           dense
@@ -50,7 +50,7 @@
         :search="search"
         class="elevation-1"
         :loading="loading"
-        loading-text="Loading... Please wait"
+        :loading-text="loadingText"
         dense
       >
         <template v-slot:[`item.player_nickname`]="{ item }">
@@ -70,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter/";
@@ -104,24 +104,48 @@ export default class TrackRecords extends Vue {
   loading = true;
   loadingTrack = true;
   showCps = false;
-  @Emit("trackname")
-  emitTrackName() {
-    return this.track.name;
-  }
-  @Watch("$store.state.showCps")
-  OnPropertyChanged(value: boolean) {
-    value
-      ? this.headers.push({ text: "Checkpoints", value: "checkpoints" })
-      : this.headers.splice(
-          this.headers.findIndex(h => h.text === "Checkpoints")
-        );
-  }
 
+  get searchText() {
+    return this.$t("message.search");
+  }
+  get loadingText() {
+    return this.$t("message.loading");
+  }
+  get rankText() {
+    return this.$t("message.rank");
+  }
+  get updatedAtText() {
+    return this.$t("message.updatedAt");
+  }
   get showCpsState() {
     return this.$store.state.showCps;
   }
   set showCpsState(value: boolean) {
     this.$store.commit("SET_SHOWCPS", value);
+  }
+
+  get headers() {
+    return [
+      { text: this.rankText, align: "start", value: "rank" },
+      { text: "Player", value: "player_nickname", sortable: false },
+      { text: "Score", value: "score" },
+      { text: this.updatedAtText, value: "updated_at" },
+      this.$store.state.showCps && {
+        text: "Checkpoints Times",
+        value: "checkpoints"
+      }
+    ];
+  }
+  get footerProps() {
+    return {
+      "items-per-page-options": [5, 10, 15, 50, 100, -1],
+      "items-per-page-text": this.$t("message.rowsPerPage")
+    };
+  }
+
+  @Emit("trackname")
+  emitTrackName() {
+    return this.track.name;
   }
 
   /* eslint-disable @typescript-eslint/camelcase */
@@ -140,19 +164,9 @@ export default class TrackRecords extends Vue {
   trackKarma = 0;
   trackKarmaOfFive = 0;
   trackKarmaCount = 0;
-  headers = [
-    { text: "Rank", align: "start", value: "rank" },
-    { text: "Player", value: "player_nickname", sortable: false },
-    { text: "Score", value: "score" },
-    { text: "Updated At", value: "updated_at" }
-  ];
-  footerProps = {
-    "items-per-page-options": [5, 10, 15, 50, 100, -1]
-  };
+
   mounted() {
     this.refresh();
-    if (this.$store.state.showCps)
-      this.headers.push({ text: "Checkpoints", value: "checkpoints" });
     this.loadingTrack = true;
     Vue.axios
       .get(

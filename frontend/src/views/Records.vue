@@ -5,7 +5,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          :label="searchText"
           single-line
           hide-details
           dense
@@ -22,7 +22,7 @@
         :search="search"
         class="elevation-1"
         :loading="loading"
-        loading-text="Loading... Please wait"
+        :loading-text="loadingText"
         dense
       >
         <template v-slot:[`item.track.name`]="{ item }">
@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { TimeFormat } from "../TimeFormat";
@@ -74,36 +74,46 @@ interface Record {
 export default class Records extends Vue {
   search = "";
   loading = true;
-  @Watch("$store.state.showCps")
-  OnPropertyChanged(value: boolean) {
-    value
-      ? this.headers.push({ text: "Checkpoints", value: "checkpoints" })
-      : this.headers.splice(
-          this.headers.findIndex(h => h.text === "Checkpoints")
-        );
-  }
   records: Record[] = [];
-  headers = [
-    // {
-    //   text: "Id",
-    //   align: "start",
-    //   value: "id"
-    // },
-    { text: "Map", value: "track.name", sortable: false },
-    { text: "Player", value: "player.nickname", sortable: false },
-    { text: "Score", value: "score" },
-    // { text: "Checkpoints Times", value: "checkpoints" },
-    // { text: "Created At", value: "created_at" },
-    { text: "Updated At", value: "updated_at" }
-  ];
-  footerProps = {
-    "items-per-page-options": [5, 10, 15, 50, 100]
-  };
+  get playerText() {
+    return this.$t("message.player");
+  }
+  get updatedAtText() {
+    return this.$t("message.updatedAt");
+  }
+  get searchText() {
+    return this.$t("message.search");
+  }
+  get loadingText() {
+    return this.$t("message.loading");
+  }
+  get headers() {
+    return [
+      // {
+      //   text: "Id",
+      //   align: "start",
+      //   value: "id"
+      // },
+      { text: "Map", value: "track.name", sortable: false },
+      { text: this.playerText, value: "player.nickname", sortable: false },
+      { text: "Score", value: "score" },
+      this.$store.state.showCps && {
+        text: "Checkpoints",
+        value: "checkpoints"
+      },
+      // { text: "Created At", value: "created_at" },
+      { text: this.updatedAtText, value: "updated_at" }
+    ];
+  }
+  get footerProps() {
+    return {
+      "items-per-page-options": [5, 10, 15, 50, 100],
+      "items-per-page-text": this.$t("message.rowsPerPage")
+    };
+  }
 
   mounted() {
     this.refresh();
-    if (this.$store.state.showCps)
-      this.headers.push({ text: "Checkpoints", value: "checkpoints" });
   }
   refresh() {
     this.loading = true;

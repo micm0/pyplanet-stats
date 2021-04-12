@@ -2,21 +2,29 @@
   <v-card :loading="loadingTrack" elevation="10">
     <v-list dense>
       <v-list-item>
-        <v-list-item-title class="text-left">Name</v-list-item-title>
+        <v-list-item-title class="text-left">{{
+          $t("message.name")
+        }}</v-list-item-title>
         <v-list-item-title v-html="tmStyle(track.name)"></v-list-item-title>
       </v-list-item>
       <v-list-item>
-        <v-list-item-title class="text-left">Author login</v-list-item-title>
+        <v-list-item-title class="text-left">{{
+          $t("message.authorLogin")
+        }}</v-list-item-title>
         <v-list-item-title v-text="track.author_login"></v-list-item-title>
       </v-list-item>
       <v-list-item>
-        <v-list-item-title class="text-left">Author time</v-list-item-title>
+        <v-list-item-title class="text-left">{{
+          $t("message.authorTime")
+        }}</v-list-item-title>
         <v-list-item-title
           v-html="toTmTime(track.time_author)"
         ></v-list-item-title>
       </v-list-item>
       <v-list-item>
-        <v-list-item-title class="text-left">Environment</v-list-item-title>
+        <v-list-item-title class="text-left">{{
+          $t("message.environment")
+        }}</v-list-item-title>
         <v-list-item-title v-text="track.environment"></v-list-item-title>
       </v-list-item>
       <v-list-item>

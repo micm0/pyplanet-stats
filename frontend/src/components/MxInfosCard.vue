@@ -4,7 +4,7 @@
     <v-list v-if="track.mx_id" dense>
       <v-list-item>
         <v-list-item-title class="text-left">
-          Link
+          {{ $t("message.link") }}
         </v-list-item-title>
         <v-list-item-title
           ><v-btn
@@ -26,7 +26,7 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-title class="text-left">
-          Download
+          {{ $t("message.file") }}
         </v-list-item-title>
         <v-list-item-title>
           <v-btn
@@ -34,7 +34,9 @@
             color="indigo"
             :href="mxDownloadMap(track.mx_id)"
             target="blank"
-            ><v-icon left> mdi-download </v-icon>Download</v-btn
+            dark
+            ><v-icon left> mdi-download </v-icon
+            >{{ $t("message.download") }}</v-btn
           >
         </v-list-item-title>
       </v-list-item>

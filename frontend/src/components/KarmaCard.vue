@@ -1,6 +1,6 @@
 <template>
   <v-card :loading="loading" elevation="10">
-    <v-subheader>Karma Rating</v-subheader>
+    <v-subheader>{{ $t("message.karmaRating") }}</v-subheader>
     <v-rating
       empty-icon="mdi-heart-outline"
       full-icon="mdi-heart"
@@ -16,7 +16,7 @@
       karma: {{ trackKarmaOfFive }} /5
     </p>
     <p class="grey--text text--lighten-2 caption ml-2">
-      votes numbers: {{ trackKarmaCount }}
+      {{ $t("message.voteNumbers") }}: {{ trackKarmaCount }}
     </p>
   </v-card>
 </template>

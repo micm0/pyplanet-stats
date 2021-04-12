@@ -5,7 +5,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          :label="searchText"
           single-line
           hide-details
           dense
@@ -19,7 +19,7 @@
         :search="search"
         class="elevation-1"
         :loading="loading"
-        loading-text="Loading... Please wait"
+        :loading-text="loadingText"
         dense
       >
         <template v-slot:[`item.name`]="{ item }">
@@ -85,33 +85,48 @@ export default class Maps extends Vue {
   search = "";
   loading = true;
   maps: Track[] = [];
-  headers = [
-    {
-      text: "Map id",
-      align: "start",
-      value: "id"
-    },
-    { text: "Name", value: "name", sortable: false },
-    { text: "Author Login", value: "author_login" },
-    { text: "Number of checkpoints", value: "num_checkpoints" },
-    { text: "Author Time", value: "time_author" },
-    { text: "Environment", value: "environment" },
-    {
-      text: this.$store.state.config.mxOrTmx == "mx" ? "MX Link" : "Tmx Link",
-      value: "mx_id",
-      sortable: false
-    },
-    {
-      text:
-        this.$store.state.config.mxOrTmx == "mx"
-          ? "Preview(from MX)"
-          : "Preview(from TMX)",
-      value: "uid"
-    }
-  ];
-  footerProps = {
-    "items-per-page-options": [5, 10, 15, 50, 100, -1]
-  };
+  get searchText() {
+    return this.$t("message.search");
+  }
+  get loadingText() {
+    return this.$t("message.loading");
+  }
+  get headers() {
+    return [
+      {
+        text: "Map id",
+        align: "start",
+        value: "id"
+      },
+      { text: this.$t("message.name"), value: "name", sortable: false },
+      { text: this.$t("message.authorLogin"), value: "author_login" },
+      { text: this.$t("message.numberOfCps"), value: "num_checkpoints" },
+      { text: this.$t("message.authorTime"), value: "time_author" },
+      { text: this.$t("message.environment"), value: "environment" },
+      {
+        text:
+          this.$store.state.config.mxOrTmx == "mx"
+            ? this.$t("message.mxLink")
+            : this.$t("message.tmxLink"),
+        value: "mx_id",
+        sortable: false
+      },
+      {
+        text:
+          this.$store.state.config.mxOrTmx == "mx"
+            ? this.$t("message.previewMX")
+            : this.$t("message.previewTMX"),
+        value: "uid"
+      }
+    ];
+  }
+
+  get footerProps() {
+    return {
+      "items-per-page-options": [5, 10, 15, 50, 100, -1],
+      "items-per-page-text": this.$t("message.rowsPerPage")
+    };
+  }
 
   mounted() {
     this.refresh();

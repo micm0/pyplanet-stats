@@ -1,7 +1,8 @@
 <template>
   <div>
     <p>
-      Server records from <span v-html="tmStyle(player.nickname)"></span> |
+      {{ $t("message.serverRecords") }}
+      <span v-html="tmStyle(player.nickname)"></span> |
       {{ player.login }}
     </p>
     <v-card>
@@ -9,7 +10,7 @@
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
-          label="Search"
+          :label="searchText"
           single-line
           hide-details
           dense
@@ -28,7 +29,7 @@
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
         :loading="loading"
-        loading-text="Loading... Please wait"
+        :loading-text="loadingText"
         dense
       >
         <template v-slot:[`item.map_name`]="{ item }">
@@ -48,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, Watch } from "vue-property-decorator";
+import { Component, Emit, Vue } from "vue-property-decorator";
 import axios from "axios";
 import VueAxios from "vue-axios";
 import { MPStyle } from "@tomvlk/ts-maniaplanet-formatter/";
@@ -72,38 +73,52 @@ export default class PlayerRecords extends Vue {
   loading = true;
   sortBy = "rank";
   sortDesc = false;
+  get searchText() {
+    return this.$t("message.search");
+  }
+  get loadingText() {
+    return this.$t("message.loading");
+  }
+  get rankText() {
+    return this.$t("message.rank");
+  }
+  get updatedAtText() {
+    return this.$t("message.updatedAt");
+  }
   @Emit("playername")
   emitPlayerName() {
     return this.player.nickname;
   }
-  @Watch("$store.state.showCps")
-  OnPropertyChanged(value: boolean) {
-    value
-      ? this.headers.push({ text: "Checkpoints", value: "checkpoints" })
-      : this.headers.splice(
-          this.headers.findIndex(h => h.text === "Checkpoints")
-        );
-  }
+
   player: { id: number; login: string; nickname: string } = {
     id: 1,
     login: "",
     nickname: ""
   };
   playerRecords: PlayerRecord[] = [];
-  headers = [
-    { text: "Rank", align: "start", value: "rank" },
-    { text: "Map", value: "map_name", sortable: false },
-    { text: "Score", value: "score" },
-    { text: "Updated At", value: "updated_at" }
-  ];
-  footerProps = {
-    "items-per-page-options": [5, 10, 15, 50, 100, -1]
-  };
+
+  get headers() {
+    return [
+      { text: this.rankText, align: "start", value: "rank" },
+      { text: "Map", value: "map_name", sortable: false },
+      { text: "Score", value: "score" },
+      { text: this.updatedAtText, value: "updated_at" },
+      this.$store.state.showCps && {
+        text: "Checkpoints Times",
+        value: "checkpoints"
+      }
+    ];
+  }
+
+  get footerProps() {
+    return {
+      "items-per-page-options": [5, 10, 15, 50, 100, -1],
+      "items-per-page-text": this.$t("message.rowsPerPage")
+    };
+  }
 
   mounted() {
     this.refresh();
-    if (this.$store.state.showCps)
-      this.headers.push({ text: "Checkpoints", value: "checkpoints" });
     Vue.axios
       .get(
         `${this.$store.state.config.apiSite}/players/${this.$route.params.id}`

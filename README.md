@@ -28,7 +28,7 @@ Example:
 
 Prerequisites
 - **A Web server**
-- **A pyplanet database**
+- **A PyPlanet database**
 - **node**
 - **npm**
 https://nodejs.org/en/download/

@@ -31,7 +31,6 @@ Prerequisites
 - **A PyPlanet database**
 - **node**
 - **npm**
-https://nodejs.org/en/download/
 
 ### Installation
 **1. Clone the repo**

@@ -1,9 +1,11 @@
-# Pyplanet-Stats
+# Pyplanet-Stats   
+![](https://licensebuttons.net/l/by-nc-nd/4.0/88x31.png)
+[![](https://img.shields.io/badge/license-Creative%20Commons%20Attribution--NonCommercial--NoDerivatives%204.0%20International%20License-informational)](http://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-Web application that provide statistics about a Trackmania server running on PyPlanet (https://github.com/PyPlanet/PyPlanet)
+### Web application that provide statistics about a Trackmania server running on PyPlanet (https://github.com/PyPlanet/PyPlanet)
 
 Example:
-![alt text](https://i.imgur.com/btUbFwp.png)
+![](https://i.imgur.com/btUbFwp.png)
 
 ### Main features
 * Compatible with a Trackmania2020 or a ManiaPlanet server running on PyPlanet
